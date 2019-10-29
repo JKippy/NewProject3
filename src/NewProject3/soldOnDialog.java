@@ -111,4 +111,3 @@ public class soldOnDialog extends JDialog implements ActionListener {
     }
 
 }
-
