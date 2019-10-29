@@ -131,15 +131,50 @@ public class ListEngine extends AbstractTableModel {
             throw new IllegalArgumentException();
         }
 
-        int rows = getRowCount();
-        int cols = getColumnCount();
+        Auto auto;
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
-        pw.println(rows);
-        for(int i = 0; i < rows; i++)
-            for(int j = 0; j < cols; j++) {
-                Object currentValue = getValueAt(i, j);
-                pw.println(currentValue);
+        pw.println(listAutos.size());
+
+        for(int i = 0; i < listAutos.size(); i++) {
+            auto = listAutos.get(i);
+
+            if(auto instanceof Car) {
+                pw.println("Car");
+                pw.println(((Car) auto).isTurbo());
+            } else {
+                pw.println("Truck");
+                pw.println(((Truck) auto).isFourByFour());
             }
+
+            pw.println(auto.getAutoName());
+            pw.println(auto.getBoughtCost());
+
+            GregorianCalendar tempBoughtDate;
+            tempBoughtDate = auto.getBoughtOn();
+
+            pw.println(df.format(tempBoughtDate.getTime()));
+
+            pw.println(auto.getTrim());
+
+            if(auto.getNameOfBuyer() != null)
+                pw.println(auto.getNameOfBuyer());
+            else
+                pw.println("No buyer's name");
+
+            pw.println(auto.getSoldPrice());
+
+            GregorianCalendar tempSoldDate;
+            tempSoldDate = auto.getSoldOn();
+
+            if(tempSoldDate != null) {
+                pw.println(df.format(tempSoldDate.getTime()));
+            }  else
+                pw.println("No sold date");
+
+            //90 days overdue here
+        }
+
         pw.close();
     }
 
@@ -156,7 +191,7 @@ public class ListEngine extends AbstractTableModel {
             listAutos.clear();
             Scanner fileReader = new Scanner(new File(filename));
 
-            int numOfAutos = Integer.parseInt(fileReader.next());
+            int numOfAutos = Integer.parseInt(fileReader.nextLine());
 
             SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -164,28 +199,45 @@ public class ListEngine extends AbstractTableModel {
             Truck tempTruck;
 
             for(int i = 0; i < numOfAutos; i++) {
-                String name = fileReader.next();
+                String autoType = fileReader.nextLine();
+                boolean boolAutoValue = Boolean.parseBoolean(fileReader.nextLine());
+                String autoName = fileReader.nextLine();
+                double autoBoughtPrice = Double.parseDouble(fileReader.nextLine());
 
-                double boughtCost = Double.parseDouble(fileReader.next());
+                GregorianCalendar tempBoughtDate = new GregorianCalendar();
+                Date d = df.parse(fileReader.nextLine());
+                tempBoughtDate.setTime(d);
 
-                GregorianCalendar tempDate = new GregorianCalendar();
-                Date d = df.parse(fileReader.next());
-                tempDate.setTime(d);
+                String autoTrim = fileReader.nextLine();
 
-                String trim = fileReader.next();
+                String autoBuyerName = fileReader.nextLine();
+                if(autoBuyerName.equals("No buyer's name"))
+                    autoBuyerName = null;
 
-                String fourByFour = fileReader.next();
-                String turbo = fileReader.next();
+                double autoSoldPrice = Double.parseDouble(fileReader.nextLine());
 
-                if (fourByFour.equals("-")) {
-                    boolean turboBool = Boolean.valueOf(turbo);
-                    tempCar = new Car(tempDate, name, "test", trim, turboBool);
-                    tempCar.setBoughtCost(boughtCost);
-                    listAutos.add(tempCar);
+                GregorianCalendar tempSoldDate = new GregorianCalendar();
+                String checkSoldDate = fileReader.nextLine();
+                if(checkSoldDate.equals("No sold date")) {
+                    tempSoldDate = null;
+
                 } else {
-                    boolean boolFourByFour = Boolean.valueOf(fourByFour);
-                    tempTruck = new Truck(tempDate, name, "test", trim, boolFourByFour);
-                    tempTruck.setBoughtCost(boughtCost);
+                    Date d2 = df.parse(checkSoldDate);
+                    tempSoldDate.setTime(d2);
+                }
+
+                if(autoType.equals("Car")) {
+                    tempCar = new Car(tempBoughtDate, autoName, autoBuyerName, autoTrim, boolAutoValue);
+                    tempCar.setBoughtCost(autoBoughtPrice);
+                    tempCar.setSoldOn(tempSoldDate);
+                    tempCar.setSoldPrice(autoSoldPrice);
+                    listAutos.add(tempCar);
+                }
+                if(autoType.equals("Truck")) {
+                    tempTruck = new Truck(tempBoughtDate, autoName, autoBuyerName, autoTrim, boolAutoValue);
+                    tempTruck.setBoughtCost(autoBoughtPrice);
+                    tempTruck.setSoldOn(tempSoldDate);
+                    tempTruck.setSoldPrice(autoSoldPrice);
                     listAutos.add(tempTruck);
                 }
             }
@@ -196,7 +248,6 @@ public class ListEngine extends AbstractTableModel {
             System.out.println("Error");
             throw new IllegalArgumentException();
         }
-
     }
 
     public void createList() {
