@@ -109,5 +109,4 @@ public class soldOnDialog extends JDialog implements ActionListener {
     public int getCloseStatus(){
         return closeStatus;
     }
-
 }
