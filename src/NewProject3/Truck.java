@@ -33,7 +33,7 @@ public class Truck extends Auto {
 
     @Override
     public String toString() {
-       return "Truck     " +
+        return "Truck     " +
                 "trim=" + trim + "    " +
                 ", FourByFour=" + FourByFour + "     " +
                 ", autoName='" + autoName + '\'' + "     " +

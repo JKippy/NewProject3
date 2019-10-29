@@ -4,12 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.GregorianCalendar;
 
 /*****************************************************************
- * 
+ *
  * Maintains the GUI1024 for the red box rental store
- * 
+ *
  *****************************************************************/
 public class GUICarDealer extends JFrame implements ActionListener{
 	/** Holds menu bar */
@@ -21,12 +20,13 @@ public class GUICarDealer extends JFrame implements ActionListener{
 
 	/** menu items in each of the menus */
 	private JMenuItem openSerItem;
-	private JMenuItem exitItem;
 	private JMenuItem saveSerItem;
 	private JMenuItem saveTextItem;
+	private JMenuItem openTextItem;
+	private JMenuItem exitItem;
+
 	private JMenuItem boughtCarItem;
 	private JMenuItem boughtTruckItem;
-
 	private JMenuItem soldItem;
 
 	/** Holds the list engine */
@@ -40,28 +40,33 @@ public class GUICarDealer extends JFrame implements ActionListener{
 	//private JScrollPane scrollList;
 
 	/*****************************************************************
-	 * 
+	 *
 	 * A constructor that starts a new GUI1024 for the rental store
-	 * 
+	 *
 	 *****************************************************************/
 	public GUICarDealer(){
 		//adding menu bar and menu items
 		menus = new JMenuBar();
 		fileMenu = new JMenu("File");
 		actionMenu = new JMenu("Action");
-		openSerItem = new JMenuItem("Open File");
-		exitItem = new JMenuItem("Exit");
-		saveSerItem = new JMenuItem("Save File");
-		boughtTruckItem = new JMenuItem("Bought a Truck");
 
+		openSerItem = new JMenuItem("Open File");
+		saveSerItem = new JMenuItem("Save File");
+		saveTextItem = new JMenuItem("Save Text");
+		openTextItem = new JMenuItem("Open Text");
+		exitItem = new JMenuItem("Exit");
+		boughtTruckItem = new JMenuItem("Bought a Truck");
+		boughtCarItem = new JMenuItem("Bought a Car");
 		soldItem = new JMenuItem("Sold Car or Truck");
 
 		//adding items to bar
 		fileMenu.add(openSerItem);
 		fileMenu.add(saveSerItem);
+		fileMenu.add(openTextItem);
+		fileMenu.add(saveTextItem);
 		fileMenu.add(exitItem);
 		actionMenu.add(boughtTruckItem);
-
+		actionMenu.add(boughtCarItem);
 		actionMenu.add(soldItem);
 
 		menus.add(fileMenu);
@@ -70,8 +75,11 @@ public class GUICarDealer extends JFrame implements ActionListener{
 		//adding actionListener
 		openSerItem.addActionListener(this);
 		saveSerItem.addActionListener(this);
+		openTextItem.addActionListener(this);
+		saveTextItem.addActionListener(this);
 		exitItem.addActionListener(this);
 		boughtTruckItem.addActionListener(this);
+		boughtCarItem.addActionListener(this);
 		soldItem.addActionListener(this);
 
 		setJMenuBar(menus);
@@ -80,8 +88,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 		panel = new JPanel();
 		DList = new ListEngine();
 		jListArea = new JTable(DList);
-        JScrollPane scrollList = new JScrollPane(jListArea);
-        scrollList.setPreferredSize(new Dimension(800,300));
+		JScrollPane scrollList = new JScrollPane(jListArea);
+		scrollList.setPreferredSize(new Dimension(800,300));
 		panel.add(scrollList);
 
 		add(panel, BorderLayout.CENTER);
@@ -91,9 +99,9 @@ public class GUICarDealer extends JFrame implements ActionListener{
 	}
 
 	/*****************************************************************
-	 * 
+	 *
 	 * This method handles event-handling code for the GUI1024
-	 * 
+	 *
 	 * @param e - Holds the action event parameter
 	 *****************************************************************/
 	public void actionPerformed(ActionEvent e) {
@@ -101,20 +109,50 @@ public class GUICarDealer extends JFrame implements ActionListener{
 		Object comp = e.getSource();
 
 		if (saveSerItem == comp || saveTextItem == comp) {
-            JFileChooser chooser = new JFileChooser();
-            int status = chooser.showSaveDialog(null);
-            if (status == JFileChooser.APPROVE_OPTION) {
-                String filename = chooser.getSelectedFile().getAbsolutePath();
-                if (saveSerItem == e.getSource())
-                    DList.saveDatabase(filename);
-            }
-        }
+			JFileChooser chooser = new JFileChooser();
+			int status = chooser.showSaveDialog(null);
+			if (status == JFileChooser.APPROVE_OPTION) {
+				String filename = chooser.getSelectedFile().getAbsolutePath();
+				if (saveSerItem == e.getSource()) {
+					DList.saveDatabase(filename);
+					System.out.println("Saved serialized");
+				}
+				if(saveTextItem == e.getSource()) {
+					DList.saveAsText(filename);
+					System.out.println("Saved by text");
+				}
+			}
+		}
+
+		if (openSerItem == comp || openTextItem == comp) {
+			JFileChooser chooser = new JFileChooser();
+			int status = chooser.showOpenDialog(null);
+			if (status == JFileChooser.APPROVE_OPTION) {
+				String filename = chooser.getSelectedFile().getAbsolutePath();
+				if (openSerItem == e.getSource()) {
+					DList.loadDatabase(filename);
+					System.out.println("Open serialized");
+				}
+				if(openTextItem == e.getSource()) {
+					DList.loadFromText(filename);
+					System.out.println("Opened by text");
+				}
+			}
+		}
 
 		//MenuBar options
 		if(e.getSource() == boughtTruckItem){
 			Auto auto = new Truck();
-			boughtOnDialog dialog = new boughtOnDialog(this, auto);
-			if(dialog.getCloseStatus() == boughtOnDialog.OK){
+			boughtTruckDialog dialog = new boughtTruckDialog(this, auto);
+			if(dialog.getCloseStatus() == boughtTruckDialog.OK){
+				DList.add(auto);
+			}
+		}
+
+		if(e.getSource() == boughtCarItem){
+			Auto auto = new Car();
+			boughtCarDialog dialog = new boughtCarDialog(this, auto);
+			if(dialog.getCloseStatus() == boughtCarDialog.OK){
 				DList.add(auto);
 			}
 		}
@@ -124,8 +162,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			Auto unit = DList.remove(index);
 			soldOnDialog dialog = new soldOnDialog(this, unit);
 			JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
-			}
 		}
+	}
 
 
 	public static void main(String[] args) {

@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
+
 
 public class ListEngine extends AbstractTableModel {
 
@@ -77,13 +79,13 @@ public class ListEngine extends AbstractTableModel {
                     if (col == 4)
                         return (((Truck) listAutos.get(row)).isFourByFour());
                     else
-                        return "";
+                        return "-";
 
                 else {
                     if (col == 5)
                         return (((Car) listAutos.get(row)).isTurbo());
                     else
-                        return "";
+                        return "-";
                 }
             default:
                 throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
@@ -121,9 +123,24 @@ public class ListEngine extends AbstractTableModel {
      *
      * @param filename Name of the file where the data is being loaded from
      */
-    public boolean saveAsText(String filename) {
-        return false;
+    public void saveAsText(String filename) {
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
+        } catch (IOException ex) {
+            throw new IllegalArgumentException();
+        }
 
+        int rows = getRowCount();
+        int cols = getColumnCount();
+
+        pw.println(rows);
+        for(int i = 0; i < rows; i++)
+            for(int j = 0; j < cols; j++) {
+                Object currentValue = getValueAt(i, j);
+                pw.println(currentValue);
+            }
+        pw.close();
     }
 
     /*****************************************************************
@@ -135,7 +152,50 @@ public class ListEngine extends AbstractTableModel {
      * @param filename Name of the file where the data is being stored in
      */
     public void loadFromText(String filename) {
-        listAutos.clear();
+        try{
+            listAutos.clear();
+            Scanner fileReader = new Scanner(new File(filename));
+
+            int numOfAutos = Integer.parseInt(fileReader.next());
+
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+
+            Car tempCar;
+            Truck tempTruck;
+
+            for(int i = 0; i < numOfAutos; i++) {
+                String name = fileReader.next();
+
+                double boughtCost = Double.parseDouble(fileReader.next());
+
+                GregorianCalendar tempDate = new GregorianCalendar();
+                Date d = df.parse(fileReader.next());
+                tempDate.setTime(d);
+
+                String trim = fileReader.next();
+
+                String fourByFour = fileReader.next();
+                String turbo = fileReader.next();
+
+                if (fourByFour.equals("-")) {
+                    boolean turboBool = Boolean.valueOf(turbo);
+                    tempCar = new Car(tempDate, name, "test", trim, turboBool);
+                    tempCar.setBoughtCost(boughtCost);
+                    listAutos.add(tempCar);
+                } else {
+                    boolean boolFourByFour = Boolean.valueOf(fourByFour);
+                    tempTruck = new Truck(tempDate, name, "test", trim, boolFourByFour);
+                    tempTruck.setBoughtCost(boughtCost);
+                    listAutos.add(tempTruck);
+                }
+            }
+
+            fireTableDataChanged();
+            fileReader.close();
+        } catch(Exception e) {
+            System.out.println("Error");
+            throw new IllegalArgumentException();
+        }
 
     }
 
@@ -186,11 +246,8 @@ public class ListEngine extends AbstractTableModel {
     }
 
 /*
-
    Here is the instructor's test data.  This will be the starting point for project
    demonstration day.
-
-
  SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         GregorianCalendar temp1 = new GregorianCalendar();
         GregorianCalendar temp2 = new GregorianCalendar();
@@ -198,7 +255,6 @@ public class ListEngine extends AbstractTableModel {
         GregorianCalendar temp4 = new GregorianCalendar();
         GregorianCalendar temp5 = new GregorianCalendar();
         GregorianCalendar temp6 = new GregorianCalendar();
-
         try {
             Date d1 = df.parse("3/20/2019");
             temp1.setTime(d1);
@@ -212,28 +268,21 @@ public class ListEngine extends AbstractTableModel {
             temp5.setTime(d5);
             Date d6 = df.parse("10/20/2019");
             temp6.setTime(d6);
-
-
             Car Car1 = new Car (temp1, "Outback", 18000,"LX", false);
             Car Car2 = new Car (temp2, "Chevy", 11000,"EX", false);
             Car Car3 = new Car (temp3, "Focus", 19000,"EX", true);
             Truck Truck1 = new Truck(temp4,"F150",12000,"Tow",false);
             Truck Truck2 = new Truck(temp5,"F250",42000,"NA",false);
             Truck Truck3 = new Truck(temp1,"F350",2000,"Turbo",true);
-
             add(Car1);
             add(Car2);
             add(Car3);
             add(Truck1);
             add(Truck2);
             add(Truck3);
-
-
         } catch (ParseException e) {
             throw new RuntimeException("Error in testing, creation of list");
         }
-
     }
-
  */
 }
