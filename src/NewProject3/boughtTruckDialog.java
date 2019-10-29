@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class boughtOnDialog extends JDialog implements ActionListener {
+public class boughtTruckDialog extends JDialog implements ActionListener {
 
     private JTextField txtName;
     private JTextField txtDate;
@@ -27,17 +27,16 @@ public class boughtOnDialog extends JDialog implements ActionListener {
     /*********************************************************
      Instantiate a Custom Dialog as 'modal' and wait for the
      user to provide data and click on a button.
-
      @param parent reference to the JFrame application
      @param auto an instantiated object to be filled with data
      *********************************************************/
 
-    public boughtOnDialog(JFrame parent, Auto auto) {
+    public boughtTruckDialog(JFrame parent, Auto auto) {
         // call parent and create a 'modal' dialog
         super(parent, true);
 
         this.auto = auto;
-        setTitle("Sold to dialog box");
+        setTitle("Bought Truck Dialog");
         closeStatus = CANCEL;
         setSize(400,200);
 
@@ -51,15 +50,11 @@ public class boughtOnDialog extends JDialog implements ActionListener {
         txtTrimPackage = new JTextField("LT",15);
         txtCost = new JTextField("10100.00", 15);
 
-        String[] autoStrings = { "Truck", "Car" };
 
-        combobox = new JComboBox<>(autoStrings);
         txtDate.setText("10/17/2018");
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(7,2));
 
-        textPanel.add(new JLabel(""));
-        textPanel.add(combobox);
         textPanel.add(new JLabel(""));
         textPanel.add(new JLabel(""));
 
@@ -104,44 +99,25 @@ public class boughtOnDialog extends JDialog implements ActionListener {
             SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             GregorianCalendar temp = new GregorianCalendar();
 
-            if (combobox.getSelectedIndex() == 1) {
-                Date d = null;
-                try {
-                    d = df.parse(txtDate.getText());
-                    temp.setTime(d);
+            Date d = null;
+            try {
+                d = df.parse(txtDate.getText());
+                temp.setTime(d);
 
-                } catch (ParseException e1) {
-//                  Do some thing good, what I am not sure.
-                }
-                auto.setBoughtOn(temp);
-                auto.setAutoName(txtName.getText());
-                ((Car) auto).setTrim(txtTrimPackage.getText());
-                auto.setBoughtCost(Double.parseDouble(txtCost.getText()));
-
+            } catch (ParseException e1) {
+                System.out.println("Invalid Date."); // Change this later
             }
 
-            else {
-                Date d = null;
-                try {
-                    d = df.parse(txtDate.getText());
-                    temp.setTime(d);
+            auto.setBoughtOn(temp);
+            auto.setAutoName(txtName.getText());
+            auto.setBoughtCost(Double.parseDouble(txtCost.getText()));
+            auto.setTrim(txtTrimPackage.getText());
 
-                } catch (ParseException e1) {
-//                  Do some thing good, what I am not sure.
-                }
-
-                auto.setBoughtOn(temp);
-                auto.setAutoName(txtName.getText());
-                auto.setBoughtCost(Double.parseDouble(txtCost.getText()));
-                ((Truck) auto).setTrim(txtTrimPackage.getText());
-
-                if (txtFourbyFour.getText().equalsIgnoreCase("true"))
-                    ((Truck) auto).setFourByFour(true);
-                else
-                    ((Truck) auto).setFourByFour(false);
-            }
+            if (txtFourbyFour.getText().equalsIgnoreCase("true"))
+                ((Truck) auto).setFourByFour(true);
+            else
+                ((Truck) auto).setFourByFour(false);
         }
-
         // make the dialog disappear
         dispose();
     }
@@ -149,13 +125,9 @@ public class boughtOnDialog extends JDialog implements ActionListener {
     /**************************************************************
      Return a String to let the caller know which button
      was clicked
-
      @return an int representing the option OK or CANCEL
      **************************************************************/
     public int getCloseStatus(){
         return closeStatus;
     }
 }
-
-
-
