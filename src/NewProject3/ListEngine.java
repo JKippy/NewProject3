@@ -6,26 +6,53 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 public class ListEngine extends AbstractTableModel {
+    private static final int boughtScrn = 0;
+    private static final int soldScrn = 1;
+    private static final int overDueScrn = 2;
 
     private ArrayList<Auto> listAutos;
+    private ArrayList<Auto> filteredListAutos;
+
+    int display = -1;
 
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
-            "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
+            "Bought Date", "Trim Package", "Four by Four", "Turbo"};
+
+    private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
+            "Sold For", "Sold On"};
+
+    private String[] columnNamesOverDue = {"Auto Name", "Bought Cost", "Bought Date", "Days overDue"};
 
     @Override
     public String getColumnName(int col) {
-        return columnNamesBought[col];
+        switch(display){
+            case soldScrn:
+                System.out.println(columnNamesSold[col]);
+                return columnNamesSold[col];
+            case overDueScrn:
+                System.out.println(columnNamesOverDue[col]);
+                return columnNamesOverDue[col];
+            default:
+                System.out.println(columnNamesBought[col]);
+                return columnNamesBought[col];
+        }
     }
 
     public ListEngine() {
         super();
         listAutos = new ArrayList<Auto>();
+        filteredListAutos = new ArrayList<Auto>();
         createList();
+    }
+
+    public void setDisplay(int selected){
+        display = selected;
+        updateScreen();
     }
 
     public Auto remove(int i) {
@@ -33,61 +60,199 @@ public class ListEngine extends AbstractTableModel {
     }
 
     public void add(Auto a) {
-        listAutos.add(a);
+        switch(display){
+            case soldScrn:
+                filteredListAutos.add(a);
+            case overDueScrn:
+                filteredListAutos.add(a);
+            case boughtScrn:
+                filteredListAutos.add(a);
+            default:
+                listAutos.add(a);
+        }
         fireTableDataChanged();
     }
 
     public Auto get(int i) {
-        return listAutos.get(i);
+        switch(display){
+            case soldScrn:
+                return filteredListAutos.get(i);
+            case overDueScrn:
+                return filteredListAutos.get(i);
+            case boughtScrn:
+                return filteredListAutos.get(i);
+            default:
+                return listAutos.get(i);
+        }
     }
 
     public int getSize() {
-        return listAutos.size();
+        switch(display){
+            case soldScrn:
+                return filteredListAutos.size();
+            case overDueScrn:
+                return filteredListAutos.size();
+            case boughtScrn:
+                return filteredListAutos.size();
+            default:
+                return listAutos.size();
+        }
     }
 
     @Override
     public int getRowCount() {
-        return listAutos.size();
+        switch(display){
+            case soldScrn:
+                return filteredListAutos.size();
+            case overDueScrn:
+                return filteredListAutos.size();
+            case boughtScrn:
+                return filteredListAutos.size();
+            default:
+                return listAutos.size();
+        }
     }
 
     @Override
     public int getColumnCount() {
-        return columnNamesBought.length;
+        switch(display){
+            case soldScrn:
+                return columnNamesSold.length;
+            case overDueScrn:
+                return columnNamesOverDue.length;
+            default:
+                return columnNamesBought.length;
+        }
     }
 
     @Override
     public Object getValueAt(int row, int col) {
-        switch (col) {
-            case 0:
-                return (listAutos.get(row).getAutoName());
+        switch(display){
+            case soldScrn:
+                switch (col) {
+                    case 0:
+                        return (filteredListAutos.get(row).getAutoName());
 
-            case 1:
-                return (listAutos.get(row).getBoughtCost());
+                    case 1:
+                        return (filteredListAutos.get(row).getBoughtCost());
 
-            case 2:
-                return (DateFormat.getDateInstance(DateFormat.SHORT)
-                        .format(listAutos.get(row).getBoughtOn().getTime()));
+                    case 2:
+                        return (DateFormat.getDateInstance(DateFormat.SHORT)
+                                .format(filteredListAutos.get(row).getBoughtOn().getTime()));
 
-            case 3:
-                return (listAutos.get(row).getTrim());
+                    case 3:
+                        return (filteredListAutos.get(row).getNameOfBuyer());
 
-            case 4:
-            case 5:
-                if (listAutos.get(row) instanceof Truck)
-                    if (col == 4)
-                        return (((Truck) listAutos.get(row)).isFourByFour());
-                    else
-                        return "";
+                    case 4:
+                        return (filteredListAutos.get(row).getSoldPrice());
+                    case 5:
+                        return (DateFormat.getDateInstance(DateFormat.SHORT)
+                                .format(filteredListAutos.get(row).getSoldOn().getTime()));
 
-                else {
-                    if (col == 5)
-                        return (((Car) listAutos.get(row)).isTurbo());
-                    else
-                        return "";
+                    default:
+                        throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
+                }
+            case overDueScrn:
+                switch (col) {
+                    case 0:
+                        return (filteredListAutos.get(row).getAutoName());
+
+                    case 1:
+                        return (filteredListAutos.get(row).getBoughtCost());
+
+                    case 2:
+                        return (DateFormat.getDateInstance(DateFormat.SHORT)
+                                .format(filteredListAutos.get(row).getBoughtOn().getTime()));
+                    case 3:
+                        return (filteredListAutos.get(row).getOverDueDays());
+                    default:
+                        throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
+                }
+            case boughtScrn:
+                switch (col) {
+                    case 0:
+                        return (filteredListAutos.get(row).getAutoName());
+
+                    case 1:
+                        return (filteredListAutos.get(row).getBoughtCost());
+
+                    case 2:
+                        return (DateFormat.getDateInstance(DateFormat.SHORT)
+                                .format(filteredListAutos.get(row).getBoughtOn().getTime()));
+
+                    case 3:
+                        return (filteredListAutos.get(row).getTrim());
+
+                    case 4:
+                    case 5:
+                        if (filteredListAutos.get(row) instanceof Truck)
+                            if (col == 4)
+                                return (((Truck) filteredListAutos.get(row)).isFourByFour());
+                            else
+                                return "-";
+
+                        else {
+                            if (col == 5)
+                                return (((Car) filteredListAutos.get(row)).isTurbo());
+                            else
+                                return "-";
+                        }
+                    default:
+                        throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
                 }
             default:
-                throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
+                switch (col) {
+                    case 0:
+                        return (listAutos.get(row).getAutoName());
+
+                    case 1:
+                        return (listAutos.get(row).getBoughtCost());
+
+                    case 2:
+                        return (DateFormat.getDateInstance(DateFormat.SHORT)
+                                .format(listAutos.get(row).getBoughtOn().getTime()));
+
+                    case 3:
+                        return (listAutos.get(row).getTrim());
+
+                    case 4:
+                    case 5:
+                        if (listAutos.get(row) instanceof Truck)
+                            if (col == 4)
+                                return (((Truck) listAutos.get(row)).isFourByFour());
+                            else
+                                return "-";
+
+                        else {
+                            if (col == 5)
+                                return (((Car) listAutos.get(row)).isTurbo());
+                            else
+                                return "-";
+                        }
+                    default:
+                        throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
+                }
         }
+    }
+
+    public void updateScreen(){
+        switch(display){
+            case soldScrn:
+                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.nameOfBuyer));
+                break;
+            case boughtScrn:
+                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getBoughtOn()));
+                break;
+            case overDueScrn:
+                //filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getOverDueDays()));
+                break;
+        }
+        fireTableDataChanged();
+        fireTableStructureChanged();
     }
 
     public void saveDatabase(String filename) {
@@ -121,9 +286,24 @@ public class ListEngine extends AbstractTableModel {
      *
      * @param filename Name of the file where the data is being loaded from
      */
-    public boolean saveAsText(String filename) {
-        return false;
+    public void saveAsText(String filename) {
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
+        } catch (IOException ex) {
+            throw new IllegalArgumentException();
+        }
 
+        int rows = getRowCount();
+        int cols = getColumnCount();
+
+        pw.println(rows);
+        for(int i = 0; i < rows; i++)
+            for(int j = 0; j < cols; j++) {
+                Object currentValue = getValueAt(i, j);
+                pw.println(currentValue);
+            }
+        pw.close();
     }
 
     /*****************************************************************
@@ -135,7 +315,50 @@ public class ListEngine extends AbstractTableModel {
      * @param filename Name of the file where the data is being stored in
      */
     public void loadFromText(String filename) {
-        listAutos.clear();
+        try{
+            listAutos.clear();
+            Scanner fileReader = new Scanner(new File(filename));
+
+            int numOfAutos = Integer.parseInt(fileReader.next());
+
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+
+            Car tempCar;
+            Truck tempTruck;
+
+            for(int i = 0; i < numOfAutos; i++) {
+                String name = fileReader.next();
+
+                double boughtCost = Double.parseDouble(fileReader.next());
+
+                GregorianCalendar tempDate = new GregorianCalendar();
+                Date d = df.parse(fileReader.next());
+                tempDate.setTime(d);
+
+                String trim = fileReader.next();
+
+                String fourByFour = fileReader.next();
+                String turbo = fileReader.next();
+
+                if (fourByFour.equals("-")) {
+                    boolean turboBool = Boolean.valueOf(turbo);
+                    tempCar = new Car(tempDate, name, "test", trim, turboBool);
+                    tempCar.setBoughtCost(boughtCost);
+                    listAutos.add(tempCar);
+                } else {
+                    boolean boolFourByFour = Boolean.valueOf(fourByFour);
+                    tempTruck = new Truck(tempDate, name, "test", trim, boolFourByFour);
+                    tempTruck.setBoughtCost(boughtCost);
+                    listAutos.add(tempTruck);
+                }
+            }
+
+            fireTableDataChanged();
+            fileReader.close();
+        } catch(Exception e) {
+            System.out.println("Error");
+            throw new IllegalArgumentException();
+        }
 
     }
 
@@ -186,11 +409,8 @@ public class ListEngine extends AbstractTableModel {
     }
 
 /*
-
    Here is the instructor's test data.  This will be the starting point for project
    demonstration day.
-
-
  SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         GregorianCalendar temp1 = new GregorianCalendar();
         GregorianCalendar temp2 = new GregorianCalendar();
@@ -198,7 +418,6 @@ public class ListEngine extends AbstractTableModel {
         GregorianCalendar temp4 = new GregorianCalendar();
         GregorianCalendar temp5 = new GregorianCalendar();
         GregorianCalendar temp6 = new GregorianCalendar();
-
         try {
             Date d1 = df.parse("3/20/2019");
             temp1.setTime(d1);
@@ -212,28 +431,21 @@ public class ListEngine extends AbstractTableModel {
             temp5.setTime(d5);
             Date d6 = df.parse("10/20/2019");
             temp6.setTime(d6);
-
-
             Car Car1 = new Car (temp1, "Outback", 18000,"LX", false);
             Car Car2 = new Car (temp2, "Chevy", 11000,"EX", false);
             Car Car3 = new Car (temp3, "Focus", 19000,"EX", true);
             Truck Truck1 = new Truck(temp4,"F150",12000,"Tow",false);
             Truck Truck2 = new Truck(temp5,"F250",42000,"NA",false);
             Truck Truck3 = new Truck(temp1,"F350",2000,"Turbo",true);
-
             add(Car1);
             add(Car2);
             add(Car3);
             add(Truck1);
             add(Truck2);
             add(Truck3);
-
-
         } catch (ParseException e) {
             throw new RuntimeException("Error in testing, creation of list");
         }
-
     }
-
  */
 }

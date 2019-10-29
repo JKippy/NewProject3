@@ -1,134 +1,205 @@
 package NewProject3;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
 
 /*****************************************************************
- * 
+ *
  * Maintains the GUI1024 for the red box rental store
- * 
+ *
  *****************************************************************/
 public class GUICarDealer extends JFrame implements ActionListener{
-	/** Holds menu bar */
-	private JMenuBar menus;
+    /** Holds menu bar */
+    private JMenuBar menus;
 
-	/** menus in the menu bar */
-	private JMenu fileMenu;
-	private JMenu actionMenu;
+    /** menus in the menu bar */
+    private JMenu fileMenu;
+    private JMenu actionMenu;
 
-	/** menu items in each of the menus */
-	private JMenuItem openSerItem;
-	private JMenuItem exitItem;
-	private JMenuItem saveSerItem;
-	private JMenuItem saveTextItem;
-	private JMenuItem boughtCarItem;
-	private JMenuItem boughtTruckItem;
+    /** menu items in each of the menus */
+    private JMenuItem openSerItem;
+    private JMenuItem saveSerItem;
+    private JMenuItem saveTextItem;
+    private JMenuItem openTextItem;
+    private JMenuItem exitItem;
+    private JMenuItem soldScreen;
+    private JMenuItem boughtScreen;
+    private JMenuItem overDueScreen;
 
-	private JMenuItem soldItem;
+    private JMenuItem boughtCarItem;
+    private JMenuItem boughtTruckItem;
+    private JMenuItem soldItem;
 
-	/** Holds the list engine */
-	private ListEngine DList;
-	private JPanel panel;
+    /** Holds the list engine */
+    private ListEngine DList;
+    private JPanel panel;
 
-	/** Holds JListArea */
-	private JTable jListArea;
+    /** Holds JListArea */
+    private JTable jListArea;
 
-	/** Scroll pane */
-	//private JScrollPane scrollList;
+    /** Scroll pane */
+    //private JScrollPane scrollList;
 
-	/*****************************************************************
-	 * 
-	 * A constructor that starts a new GUI1024 for the rental store
-	 * 
-	 *****************************************************************/
-	public GUICarDealer(){
-		//adding menu bar and menu items
-		menus = new JMenuBar();
-		fileMenu = new JMenu("File");
-		actionMenu = new JMenu("Action");
-		openSerItem = new JMenuItem("Open File");
-		exitItem = new JMenuItem("Exit");
-		saveSerItem = new JMenuItem("Save File");
-		boughtTruckItem = new JMenuItem("Bought a Truck");
+    /*****************************************************************
+     *
+     * A constructor that starts a new GUI1024 for the rental store
+     *
+     *****************************************************************/
+    public GUICarDealer(){
+        //adding menu bar and menu items
+        menus = new JMenuBar();
+        fileMenu = new JMenu("File");
+        actionMenu = new JMenu("Action");
 
-		soldItem = new JMenuItem("Sold Car or Truck");
+        openSerItem = new JMenuItem("Open File");
+        saveSerItem = new JMenuItem("Save File");
+        saveTextItem = new JMenuItem("Save Text");
+        openTextItem = new JMenuItem("Open Text");
+        exitItem = new JMenuItem("Exit");
+        soldScreen = new JMenuItem("Sold Screen");
+        boughtScreen = new JMenuItem("Bought Screen");
+        overDueScreen = new JMenuItem("30 Days OverDue Screen");
+        boughtTruckItem = new JMenuItem("Bought a Truck");
+        boughtCarItem = new JMenuItem("Bought a Car");
+        soldItem = new JMenuItem("Sold Car or Truck");
 
-		//adding items to bar
-		fileMenu.add(openSerItem);
-		fileMenu.add(saveSerItem);
-		fileMenu.add(exitItem);
-		actionMenu.add(boughtTruckItem);
+        //adding items to bar
+        fileMenu.add(openSerItem);
+        fileMenu.add(saveSerItem);
+        fileMenu.add(openTextItem);
+        fileMenu.add(saveTextItem);
+        fileMenu.add(exitItem);
+        fileMenu.add(soldScreen);
+        fileMenu.add(boughtScreen);
+        fileMenu.add(overDueScreen);
+        actionMenu.add(boughtTruckItem);
+        actionMenu.add(boughtCarItem);
+        actionMenu.add(soldItem);
 
-		actionMenu.add(soldItem);
+        menus.add(fileMenu);
+        menus.add(actionMenu);
 
-		menus.add(fileMenu);
-		menus.add(actionMenu);
+        //adding actionListener
+        openSerItem.addActionListener(this);
+        saveSerItem.addActionListener(this);
+        openTextItem.addActionListener(this);
+        saveTextItem.addActionListener(this);
+        exitItem.addActionListener(this);
+        soldScreen.addActionListener(this);
+        boughtScreen.addActionListener(this);
+        overDueScreen.addActionListener(this);
+        boughtTruckItem.addActionListener(this);
+        boughtCarItem.addActionListener(this);
+        soldItem.addActionListener(this);
 
-		//adding actionListener
-		openSerItem.addActionListener(this);
-		saveSerItem.addActionListener(this);
-		exitItem.addActionListener(this);
-		boughtTruckItem.addActionListener(this);
-		soldItem.addActionListener(this);
+        setJMenuBar(menus);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		setJMenuBar(menus);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		panel = new JPanel();
-		DList = new ListEngine();
-		jListArea = new JTable(DList);
+        panel = new JPanel();
+        DList = new ListEngine();
+        jListArea = new JTable(DList);
         JScrollPane scrollList = new JScrollPane(jListArea);
         scrollList.setPreferredSize(new Dimension(800,300));
-		panel.add(scrollList);
+        panel.add(scrollList);
 
-		add(panel, BorderLayout.CENTER);
+        add(panel, BorderLayout.CENTER);
 
-		setVisible(true);
-		setSize(950,450);
-	}
+        setVisible(true);
+        setSize(950,450);
+    }
 
-	/*****************************************************************
-	 * 
-	 * This method handles event-handling code for the GUI1024
-	 * 
-	 * @param e - Holds the action event parameter
-	 *****************************************************************/
-	public void actionPerformed(ActionEvent e) {
+    /*****************************************************************
+     *
+     * This method handles event-handling code for the GUI1024
+     *
+     * @param e - Holds the action event parameter
+     *****************************************************************/
+    public void actionPerformed(ActionEvent e) {
 
-		Object comp = e.getSource();
+        Object comp = e.getSource();
 
-		if (saveSerItem == comp || saveTextItem == comp) {
+        if (saveSerItem == comp || saveTextItem == comp) {
             JFileChooser chooser = new JFileChooser();
             int status = chooser.showSaveDialog(null);
             if (status == JFileChooser.APPROVE_OPTION) {
                 String filename = chooser.getSelectedFile().getAbsolutePath();
-                if (saveSerItem == e.getSource())
+                if (saveSerItem == e.getSource()) {
                     DList.saveDatabase(filename);
+                    System.out.println("Saved serialized");
+                }
+                if(saveTextItem == e.getSource()) {
+                    DList.saveAsText(filename);
+                    System.out.println("Saved by text");
+                }
             }
         }
 
-		//MenuBar options
-		if(e.getSource() == boughtTruckItem){
-			Auto auto = new Truck();
-			boughtOnDialog dialog = new boughtOnDialog(this, auto);
-			if(dialog.getCloseStatus() == boughtOnDialog.OK){
-				DList.add(auto);
-			}
-		}
+        if (openSerItem == comp || openTextItem == comp) {
+            JFileChooser chooser = new JFileChooser();
+            int status = chooser.showOpenDialog(null);
+            if (status == JFileChooser.APPROVE_OPTION) {
+                String filename = chooser.getSelectedFile().getAbsolutePath();
+                if (openSerItem == e.getSource()) {
+                    DList.loadDatabase(filename);
+                    System.out.println("Open serialized");
+                }
+                if(openTextItem == e.getSource()) {
+                    DList.loadFromText(filename);
+                    System.out.println("Opened by text");
+                }
+            }
+        }
 
-		if (soldItem == e.getSource()) {
-			int index = jListArea.getSelectedRow();
-			Auto unit = DList.remove(index);
-			soldOnDialog dialog = new soldOnDialog(this, unit);
-			JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
-			}
-		}
+        if(comp == exitItem){
+            System.exit(0);
+        }
+
+        if(comp == boughtScreen){
+            DList.setDisplay(0);
+            repaint();
+            soldItem.setEnabled(true);
+        }
+
+        if(comp == soldScreen){
+            DList.setDisplay(1);
+            repaint();
+            soldItem.setEnabled(false);
+        }
+
+        if(comp == overDueScreen){
+            DList.setDisplay(2);
+            repaint();
+            soldItem.setEnabled(true);
+        }
+
+        //MenuBar options
+        if(e.getSource() == boughtTruckItem){
+            Auto auto = new Truck();
+            boughtOnDialog dialog = new boughtOnDialog(this, auto);
+            if(dialog.getCloseStatus() == boughtOnDialog.OK){
+                DList.add(auto);
+            }
+        }
+
+        if (soldItem == e.getSource()) {
+            int index = jListArea.getSelectedRow();
+            if(index > -1) {
+                Auto unit = DList.get(index);
+                soldOnDialog dialog = new soldOnDialog(this, unit);
+                JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
+                DList.setDisplay(0);
+            }
+            else
+                JOptionPane.showMessageDialog(null, "Please select a vehicle");
+        }
+    }
 
 
-	public static void main(String[] args) {
-		new GUICarDealer();
-	}
+    public static void main(String[] args) {
+        new GUICarDealer();
+    }
 }

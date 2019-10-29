@@ -5,15 +5,16 @@ import java.util.GregorianCalendar;
 
 public class Car extends Auto {
 
-	private String trim;
-	private boolean turbo;
+    private String trim;
+    private boolean turbo;
+
 
     public Car() {
     }
 
     public double getCost() {
-		return 42;
-	}
+        return 42;
+    }
 
     public Car(GregorianCalendar boughtOn,  String name,
                String nameOfBuyer, String trim, boolean turbo) {
@@ -34,13 +35,19 @@ public class Car extends Auto {
         return turbo;
     }
 
+    public void testingGithub() {
+        System.out.println("this tests github");
+    }
+
     public void setTurbo(boolean turbo) {
         this.turbo = turbo;
     }
 
+    //Worked
+
     @Override
     public String toString() {
-       return "Car    " +
+        return "Car    " +
                 "trim='" + trim + '\'' +  "    " +
                 ", turbo=" + turbo + "    " +
                 ", autoName='" + autoName + '\'' + "    " +

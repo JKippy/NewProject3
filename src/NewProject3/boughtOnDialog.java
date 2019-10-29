@@ -27,7 +27,6 @@ public class boughtOnDialog extends JDialog implements ActionListener {
     /*********************************************************
      Instantiate a Custom Dialog as 'modal' and wait for the
      user to provide data and click on a button.
-
      @param parent reference to the JFrame application
      @param auto an instantiated object to be filled with data
      *********************************************************/
@@ -149,13 +148,9 @@ public class boughtOnDialog extends JDialog implements ActionListener {
     /**************************************************************
      Return a String to let the caller know which button
      was clicked
-
      @return an int representing the option OK or CANCEL
      **************************************************************/
     public int getCloseStatus(){
         return closeStatus;
     }
 }
-
-
-
