@@ -60,9 +60,9 @@ public class GUICarDealer extends JFrame implements ActionListener{
 		saveTextItem = new JMenuItem("Save Text");
 		openTextItem = new JMenuItem("Open Text");
 		exitItem = new JMenuItem("Exit");
-        soldScreen = new JMenuItem("Sold Screen");
-        boughtScreen = new JMenuItem("Bought Screen");
-        overDueScreen = new JMenuItem("30 Days OverDue Screen");
+        soldScreen = new JCheckBoxMenuItem("Sold Screen");
+        boughtScreen = new JCheckBoxMenuItem("Bought Screen");
+        overDueScreen = new JCheckBoxMenuItem("90 Days OverDue Screen");
 		boughtTruckItem = new JMenuItem("Bought a Truck");
 		boughtCarItem = new JMenuItem("Bought a Car");
 		soldItem = new JMenuItem("Sold Car or Truck");
@@ -164,18 +164,24 @@ public class GUICarDealer extends JFrame implements ActionListener{
         if(comp == boughtScreen){
             DList.setDisplay(0);
             repaint();
+            soldScreen.setSelected(false);
+            overDueScreen.setSelected(false);
             soldItem.setEnabled(true);
         }
 
         if(comp == soldScreen){
             DList.setDisplay(1);
             repaint();
+			boughtScreen.setSelected(false);
+			overDueScreen.setSelected(false);
             soldItem.setEnabled(false);
         }
 
         if(comp == overDueScreen){
             DList.setDisplay(2);
             repaint();
+			soldScreen.setSelected(false);
+			boughtScreen.setSelected(false);
             soldItem.setEnabled(true);
         }
 
@@ -203,7 +209,12 @@ public class GUICarDealer extends JFrame implements ActionListener{
 				soldOnDialog dialog = new soldOnDialog(this, unit);
 				JOptionPane.showMessageDialog(null, "Be sure to thank "+unit.getNameOfBuyer()+
 						" for buying the "+unit.getAutoName()+". The difference in price was $" + (unit.getSoldPrice() - unit.getBoughtCost()));
-				DList.setDisplay(0);
+				System.out.println(DList.getDisplay());
+				if(DList.getDisplay() == 2)
+					DList.setDisplay(2);
+				else
+					DList.setDisplay(0);
+				repaint();
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Please select a vehicle");
