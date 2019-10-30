@@ -60,6 +60,10 @@ public class ListEngine extends AbstractTableModel {
         updateScreen();
     }
 
+    public int getDisplay(){
+        return display;
+    }
+
     public Auto remove(int i) {
         return null;
     }
@@ -250,8 +254,8 @@ public class ListEngine extends AbstractTableModel {
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getBoughtOn()));
                 break;
             case overDueScrn:
-                //filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getOverDueDays()));
                 break;
         }
