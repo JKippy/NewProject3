@@ -72,12 +72,15 @@ public class GUICarDealer extends JFrame implements ActionListener{
 		fileMenu.add(saveSerItem);
 		fileMenu.add(openTextItem);
 		fileMenu.add(saveTextItem);
+		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
+		fileMenu.addSeparator();
         fileMenu.add(soldScreen);
         fileMenu.add(boughtScreen);
         fileMenu.add(overDueScreen);
 		actionMenu.add(boughtTruckItem);
 		actionMenu.add(boughtCarItem);
+		actionMenu.addSeparator();
 		actionMenu.add(soldItem);
 
 		menus.add(fileMenu);
@@ -198,7 +201,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			if(index > -1) {
 				Auto unit = DList.get(index);
 				soldOnDialog dialog = new soldOnDialog(this, unit);
-				JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
+				JOptionPane.showMessageDialog(null, "Be sure to thank "+unit.getNameOfBuyer()+
+						" for buying the "+unit.getAutoName()+". The difference in price was $" + (unit.getSoldPrice() - unit.getBoughtCost()));
 				DList.setDisplay(0);
 			}
 			else

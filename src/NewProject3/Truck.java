@@ -13,7 +13,7 @@ public class Truck extends Auto {
     }
 
     public double getCost() {
-        return 42;
+        return getBoughtCost();
     }
 
     public Truck(GregorianCalendar boughtOn, String name,
