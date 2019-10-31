@@ -114,9 +114,26 @@ public class soldOnDialog extends JDialog implements ActionListener {
                     }
                 }
             }
+
+            double temp2 = 5000.0;
+            boolean validPrice = false;
+            int count2 = 0;
+            while(!validPrice) {
+                try {
+                    temp2 = Double.parseDouble(txtCost.getText());
+                    validPrice = true;
+                } catch (Exception e1) {
+                    count2++;
+                    txtCost.setText("5000.0");
+                    JOptionPane.showMessageDialog(null, "Invalid price. Setting price to default of $5000.0", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    if(count2 == 5){
+                        validPrice = true;
+                    }
+                }
+            }
             auto.setSoldOn(temp);
             auto.setNameOfBuyer(txtName.getText());
-            auto.setSoldPrice(Double.parseDouble(txtCost.getText()));
+            auto.setSoldPrice(temp2);
         }
 
         if(button == cancelButton) {

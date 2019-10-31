@@ -126,15 +126,36 @@ public class boughtCarDialog extends JDialog implements ActionListener {
                     }
                 }
             }
+
+            double temp2 = 5000.0;
+            boolean validPrice = false;
+            int count2 = 0;
+            while(!validPrice) {
+                try {
+                    temp2 = Double.parseDouble(txtCost.getText());
+                    validPrice = true;
+                } catch (Exception e1) {
+                    count2++;
+                    txtCost.setText("5000.0");
+                    JOptionPane.showMessageDialog(null, "Invalid price. Setting price to default of $5000.0", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    if(count2 == 5){
+                        validPrice = true;
+                    }
+                }
+            }
             auto.setBoughtOn(temp);
             auto.setAutoName(txtName.getText());
-            auto.setBoughtCost(Double.parseDouble(txtCost.getText()));
+            auto.setBoughtCost(temp2);
             auto.setTrim(txtTrimPackage.getText());
 
             if (txtTurbo.getText().equalsIgnoreCase("true"))
                 ((Car) auto).setTurbo(true);
-            else
+            else if (txtTurbo.getText().equalsIgnoreCase("false"))
                 ((Car) auto).setTurbo(false);
+            else {
+                ((Car) auto).setTurbo(false);
+                JOptionPane.showMessageDialog(null, "Invalid turbo input. Set to false default.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
         if (button == cancelButton) {
             dispose();
