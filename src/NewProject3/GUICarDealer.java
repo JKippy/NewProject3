@@ -175,6 +175,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			boughtScreen.setSelected(false);
 			overDueScreen.setSelected(false);
             soldItem.setEnabled(false);
+			boughtCarItem.setEnabled(false);
+			boughtTruckItem.setEnabled(false);
         }
 
         if(comp == overDueScreen){
@@ -183,6 +185,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			soldScreen.setSelected(false);
 			boughtScreen.setSelected(false);
             soldItem.setEnabled(true);
+            boughtCarItem.setEnabled(false);
+            boughtTruckItem.setEnabled(false);
         }
 
 		//MenuBar options
