@@ -42,7 +42,7 @@ public class ListEngine extends AbstractTableModel {
 
     /**String array containing the headers for the bought screen*/
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
-            "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
+            "Bought Date", "Trim Package", "Four by Four", "Turbo"};
 
     /**String array containing the headers for the sold screen*/
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
@@ -326,13 +326,13 @@ public class ListEngine extends AbstractTableModel {
                             if (col == 4)
                                 return (((Truck) filteredListAutos.get(row)).isFourByFour());
                             else
-                                return "-";
+                                return false;
 
                         else {
                             if (col == 5)
                                 return (((Car) filteredListAutos.get(row)).isTurbo());
                             else
-                                return "-";
+                                return false;
                         }
                     default:
                         throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
@@ -358,13 +358,13 @@ public class ListEngine extends AbstractTableModel {
                             if (col == 4)
                                 return (((Truck) listAutos.get(row)).isFourByFour());
                             else
-                                return "-";
+                                return false;
 
                         else {
                             if (col == 5)
                                 return (((Car) listAutos.get(row)).isTurbo());
                             else
-                                return "-";
+                                return false;
                         }
                     default:
                         throw new RuntimeException("JTable row,col out of range: " + row + " " + col);
