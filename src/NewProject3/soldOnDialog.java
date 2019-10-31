@@ -91,8 +91,11 @@ public class soldOnDialog extends JDialog implements ActionListener {
                 df.setLenient(false);
                 d = df.parse(txtDate.getText());
                 temp.setTime(d);
-            } catch (ParseException e1) {
+                if(temp.compareTo(this.auto.getBoughtOn()) < 0)
+                    throw new Exception();
+            } catch (Exception e1) {
                 JOptionPane.showMessageDialog(null, "Invalid date. Setting date to default day.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                closeStatus = CANCEL;
             }
             auto.setNameOfBuyer(txtName.getText());
             auto.setSoldOn(temp);
