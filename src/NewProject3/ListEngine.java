@@ -399,6 +399,52 @@ public class ListEngine extends AbstractTableModel {
     }
 
     /*********************************************************************
+     * Sorts column after clicking header.
+     *
+     * @return none.
+     ********************************************************************/
+    public void updateHeader(String col){
+        System.out.println("Sorting by " + col);
+        if(display == soldScrn)
+            filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
+        else if(display == overDueScrn){
+            filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+            filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+        }
+        else
+            filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+
+        switch(col){
+            case "Auto Name":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getAutoName()));
+                break;
+            case "Bought Cost":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getBoughtCost()));
+                break;
+            case "Bought Date":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getBoughtOn()));
+                break;
+            case "Buyer's Name":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getNameOfBuyer()));
+                break;
+            case "Sold For":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getSoldPrice()));
+                break;
+            case "Sold On":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getSoldOn()));
+                break;
+            case "Trim Package":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getTrim()));
+                break;
+            case "Days overDue":
+                Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getOverDueDays()));
+                break;
+        }
+        fireTableDataChanged();
+        fireTableStructureChanged();
+    }
+
+    /*********************************************************************
      * Saves listAutos to a file as a serializable.
      *
      * @param filename Name of the file where the data is being saved to.
