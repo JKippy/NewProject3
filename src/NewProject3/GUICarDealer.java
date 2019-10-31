@@ -149,10 +149,12 @@ public class GUICarDealer extends JFrame implements ActionListener{
 				if (openSerItem == e.getSource()) {
 					DList.loadDatabase(filename);
 					System.out.println("Open serialized");
+					DList.setDisplay(0);
 				}
 				if(openTextItem == e.getSource()) {
 					DList.loadFromText(filename);
 					System.out.println("Opened by text");
+					DList.setDisplay(0);
 				}
 			}
 		}
