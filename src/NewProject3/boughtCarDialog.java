@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -43,6 +44,10 @@ public class boughtCarDialog extends JDialog implements ActionListener {
         // prevent user from closing window
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String stringDate = df.format(date);
+
         // instantiate and display two text fields
         txtName = new JTextField("F150",30);
         txtDate = new JTextField(15);
@@ -50,7 +55,7 @@ public class boughtCarDialog extends JDialog implements ActionListener {
         txtTrimPackage = new JTextField("LT",15);
         txtCost = new JTextField("10100.00", 15);
 
-        txtDate.setText("10/17/2018");
+        txtDate.setText(stringDate);
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(7,2));
 
@@ -95,18 +100,32 @@ public class boughtCarDialog extends JDialog implements ActionListener {
         if (button == okButton) {
             // save the information in the object
             closeStatus = OK;
+
             SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             GregorianCalendar temp = new GregorianCalendar();
             df.setLenient(false);
             Date d;
-            try {
-                d = df.parse(txtDate.getText());
-                temp.setTime(d);
-            } catch (ParseException e1) {
-                System.out.println("Invalid Date."); // Change this later
-                JOptionPane.showMessageDialog(null, "Invalid date. Setting date to default day.", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
+            Date currentDate;
+            boolean validDate = false;
+            int count = 0;
 
+            while(!validDate) {
+                try {
+                    d = df.parse(txtDate.getText());
+                    temp.setTime(d);
+                    currentDate = Calendar.getInstance().getTime();
+                    if (d.compareTo(currentDate) > 0)
+                        throw new Exception();
+                    validDate = true;
+                } catch (Exception e1) {
+                    count++;
+                    this.txtDate.setText(df.format(Calendar.getInstance().getTime()));
+                    JOptionPane.showMessageDialog(null, "Invalid date. Setting date to current day.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    if(count == 5){
+                        validDate = true;
+                    }
+                }
+            }
             auto.setBoughtOn(temp);
             auto.setAutoName(txtName.getText());
             auto.setBoughtCost(Double.parseDouble(txtCost.getText()));
@@ -116,7 +135,6 @@ public class boughtCarDialog extends JDialog implements ActionListener {
                 ((Car) auto).setTurbo(true);
             else
                 ((Car) auto).setTurbo(false);
-
         }
         if (button == cancelButton) {
             dispose();

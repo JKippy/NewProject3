@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -100,11 +101,26 @@ public class boughtTruckDialog extends JDialog implements ActionListener {
             GregorianCalendar temp = new GregorianCalendar();
             df.setLenient(false);
             Date d;
-            try {
-                d = df.parse(txtDate.getText());
-                temp.setTime(d);
-            } catch (ParseException e1) {
-                JOptionPane.showMessageDialog(null, "Invalid date. Setting date to default day.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            Date currentDate;
+            boolean validDate = false;
+            int count = 0;
+
+            while(!validDate) {
+                try {
+                    d = df.parse(txtDate.getText());
+                    temp.setTime(d);
+                    currentDate = Calendar.getInstance().getTime();
+                    if (d.compareTo(currentDate) > 0)
+                        throw new Exception();
+                    validDate = true;
+                } catch (Exception e1) {
+                    count++;
+                    this.txtDate.setText(df.format(Calendar.getInstance().getTime()));
+                    JOptionPane.showMessageDialog(null, "Invalid date. Setting date to current day.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    if(count == 5){
+                        validDate = true;
+                    }
+                }
             }
 
             auto.setBoughtOn(temp);
