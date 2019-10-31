@@ -26,7 +26,7 @@ public class ListEngine extends AbstractTableModel {
     int display = -1;
 
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
-            "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
+            "Bought Date", "Trim Package", "Four by Four", "Turbo"};
 
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
             "Sold For", "Sold On"};
@@ -61,7 +61,16 @@ public class ListEngine extends AbstractTableModel {
     }
 
     public Auto remove(int i) {
-        return null;
+        switch(display){
+            case soldScrn:
+                return filteredListAutos.remove(i);
+            case overDueScrn:
+                return filteredListAutos.remove(i);
+            case boughtScrn:
+                return filteredListAutos.remove(i);
+            default:
+                return listAutos.remove(i);
+        }
     }
 
     public void add(Auto a) {
