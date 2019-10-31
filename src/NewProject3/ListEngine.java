@@ -67,13 +67,10 @@ public class ListEngine extends AbstractTableModel {
     public String getColumnName(int col) {
         switch(display){
             case soldScrn:
-                System.out.println(columnNamesSold[col]);
                 return columnNamesSold[col];
             case overDueScrn:
-                System.out.println(columnNamesOverDue[col]);
                 return columnNamesOverDue[col];
             default:
-                System.out.println(columnNamesBought[col]);
                 return columnNamesBought[col];
         }
     }
@@ -211,9 +208,59 @@ public class ListEngine extends AbstractTableModel {
         }    }
 
     /*********************************************************************
-     * Gets a certain detail of information for a vehicle .
-     *THIS IS NOT DONE, JASON.
-     * @return display The current value of display.
+     * Gets a certain detail about a specified vehicle .
+     *
+     * @param col The column for which we are retrieving information for.
+     * @param row The index for a vehicle in the list.
+     * @return filteredListAutos.get(row).getAutoName() Returns name of
+     * a the specified vehicle in filteredListAutos.
+     * @return filteredListAutos.get(row).getBoughtCost() Returns the amount
+     * the specified vehicle in filteredListAutos was bought for.
+     * @return DateFormat.getDateInstance(DateFormat.SHORT)
+     * .format(filteredListAutos.get(row).getBoughtOn().getTime()) Returns
+     * the date the specified vehicle in filteredListAutos was bought on.
+     * @return filteredListAutos.get(row).getNameOfBuyer() Returns the
+     * name of buyer for the specified sold vehicle in filteredListAutos.
+     * @return filteredListAutos.get(row).getSoldPrice() Returns the price
+     * a the specified vehicle in filteredListAutos was sold for.
+     * @return DateFormat.getDateInstance(DateFormat.SHORT)
+     * .format(filteredListAutos.get(row).getSoldOn().getTime()) Returns the
+     * date the specified vehicle in filteredListAutos was sold on.
+     * @return filteredListAutos.get(row).getOverDueDays() Returns the number
+     * of days past the bought date for the specified vehicle in filteredListAutos.
+     * @return filteredListAutos.get(row).getTrim() Returns the trim level
+     * for the specified vehicle in filteredListAutos.
+     * @return ((Truck) filteredListAutos.get(row)).isFourByFour() If the vehicle
+     * defined by the index number is a truck and the column number is 4, it
+     * will return if the truck is a four by four.
+     * @return "-" If the vehicle in filteredListAutos is not a truck,
+     * "-" will be returned for the column.
+     * @return ((Car) filteredListAutos.get(row)).isTurbo() If the vehicle
+     * defined by the index number is a car and the column number is 5, it
+     * will return if the car has turbo.
+     * @return "-" If the vehicle in filteredListAutos is not a car,
+     * "-" will be returned for that column.
+     * @return listAutos.get(row).getAutoName() Returns the name of the
+     * specified vehicle in listAutos.
+     * @return listAutos.get(row).getBoughtCost() Returns the amount the
+     * specified vehicle in listAutos was bought for.
+     * @return DateFormat.getDateInstance(DateFormat.SHORT)
+     * .format(listAutos.get(row).getBoughtOn().getTime()) Returns the
+     * date the specified vehicle in listAutos was sold on.
+     * @return listAutos.get(row).getTrim() Returns the trim level
+     * for the specified vehicle in listAutos.
+     * @return (( Truck) listAutos.get(row)).isFourByFour() If the vehicle
+     * defined by the index number is a truck and the column number is 4, it
+     * will return if the truck is a four by four.
+     * @return "-" If the vehicle in listAutos is not a truck,
+     * "-" will be returned for the column.
+     * @return ((Car) listAutos.get(row)).isTurbo() If the vehicle
+     * defined by the index number is a car and the column number is 5, it
+     * will return if the car has turbo.
+     * @return "-" If the vehicle in listAutos is not a car,
+     * "-" will be returned for that column.
+     * @throws RuntimeException Throws exception if parameters row or col
+     * are out of range.
      ********************************************************************/
     @Override
     public Object getValueAt(int row, int col) {
@@ -325,6 +372,12 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Updates the table with a sorted list based on which display is
+     * currently selected.
+     *
+     * @return none.
+     ********************************************************************/
     public void updateScreen(){
         switch(display){
             case soldScrn:
@@ -345,6 +398,13 @@ public class ListEngine extends AbstractTableModel {
         fireTableStructureChanged();
     }
 
+    /*********************************************************************
+     * Saves listAutos to a file as a serializable.
+     *
+     * @param filename Name of the file where the data is being saved to.
+     * @exception IOException Displays message if error occurs when
+     * saving file.
+     ********************************************************************/
     public void saveDatabase(String filename) {
         try {
             FileOutputStream fos = new FileOutputStream(filename);
@@ -357,6 +417,13 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Loads listAutos as a serializable from a file.
+     *
+     * @param filename Name of the file where the data is being loaded from.
+     * @exception IOException Displays message if error occurs when
+     * loading file.
+     ********************************************************************/
     public void loadDatabase(String filename) {
         try {
             FileInputStream fis = new FileInputStream(filename);
@@ -371,11 +438,12 @@ public class ListEngine extends AbstractTableModel {
     }
 
     /*****************************************************************
-     * The following code is half baked code. It should help you
-     * understand how to save to a text file.
+     * Saves listAutos as text in a file.
      *
-     * @param filename Name of the file where the data is being loaded from
-     */
+     * @param filename Name of the file where the data is being saved to.
+     * @exception IOException Catches exception created from invalid file name.
+     * @throws IllegalArgumentException Thrown after catching IOException.
+     ******************************************************************/
     public void saveAsText(String filename) {
         PrintWriter pw = null;
         try {
@@ -432,13 +500,12 @@ public class ListEngine extends AbstractTableModel {
     }
 
     /*****************************************************************
-     * The following code is half baked code. It should help you
-     * understand how to load to a text file.  THis code does NOT
-     * function correctyly but, should give you a great start to
-     * your code.
+     * Loads listAutos as text from a file.
      *
-     * @param filename Name of the file where the data is being stored in
-     */
+     * @param filename Name of the file where the data is being loaded from.
+     * @exception Exception Catches exception if error occurs while loading data.
+     * @throws IllegalArgumentException Thrown after catching Exception.
+     ******************************************************************/
     public void loadFromText(String filename) {
         try{
             listAutos.clear();
@@ -503,56 +570,57 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*****************************************************************
+     * Saves listAutos as text in a file.
+     *
+     * @return none.
+     * @exception ParseException catches exception from error in creating list.
+     * @throws RuntimeException after catching ParseException.
+     ******************************************************************/
     public void createList() {
+//        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+//        GregorianCalendar temp1 = new GregorianCalendar();
+//        GregorianCalendar temp2 = new GregorianCalendar();
+//        GregorianCalendar temp3 = new GregorianCalendar();
+//        GregorianCalendar temp4 = new GregorianCalendar();
+//        GregorianCalendar temp5 = new GregorianCalendar();
+//        GregorianCalendar temp6 = new GregorianCalendar();
+//
+//        try {
+//            Date d1 = df.parse("3/20/2019");
+//            temp1.setTime(d1);
+//            Date d2 = df.parse("9/20/2019");
+//            temp2.setTime(d2);
+//            Date d3 = df.parse("12/20/2018");
+//            temp3.setTime(d3);
+//            Date d4 = df.parse("9/20/2019");
+//            temp4.setTime(d4);
+//            Date d5 = df.parse("1/20/2010");
+//            temp5.setTime(d5);
+//            Date d6 = df.parse("10/20/2019");
+//            temp6.setTime(d6);
+//
+//
+//            Car Car1 = new Car(temp3, "Outback", "Buyer1", "LX", false);
+//            Car Car2 = new Car(temp2, "Chevy", "Buyer2", "EX", false);
+//            Car Car3 = new Car(temp6, "Focus", "Buyer3", "EX", true);
+//            Truck Truck1 = new Truck(temp4, "F150", "BuyerA", "LX", false);
+//            Truck Truck2 = new Truck(temp1, "F250", "BuyerB", "LX", false);
+//            Truck Truck3 = new Truck(temp5, "F350", "BuyerC", "EX", true);
+//
+//            add(Car1);
+//            add(Car2);
+//            add(Car3);
+//            add(Truck1);
+//            add(Truck2);
+//            add(Truck3);
+//        } catch (ParseException e) {
+//            throw new RuntimeException("Error in testing, creation of list");
+//        }
 
-        // This code has been provided to get you started on the project.
-
+        /*Here is the instructor's test data.  This will be the starting point for project
+        demonstration day.*/
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        GregorianCalendar temp1 = new GregorianCalendar();
-        GregorianCalendar temp2 = new GregorianCalendar();
-        GregorianCalendar temp3 = new GregorianCalendar();
-        GregorianCalendar temp4 = new GregorianCalendar();
-        GregorianCalendar temp5 = new GregorianCalendar();
-        GregorianCalendar temp6 = new GregorianCalendar();
-
-        try {
-            Date d1 = df.parse("3/20/2019");
-            temp1.setTime(d1);
-            Date d2 = df.parse("9/20/2019");
-            temp2.setTime(d2);
-            Date d3 = df.parse("12/20/2018");
-            temp3.setTime(d3);
-            Date d4 = df.parse("9/20/2019");
-            temp4.setTime(d4);
-            Date d5 = df.parse("1/20/2010");
-            temp5.setTime(d5);
-            Date d6 = df.parse("10/20/2019");
-            temp6.setTime(d6);
-
-
-            Car Car1 = new Car(temp3, "Outback", "Buyer1", "LX", false);
-            Car Car2 = new Car(temp2, "Chevy", "Buyer2", "EX", false);
-            Car Car3 = new Car(temp6, "Focus", "Buyer3", "EX", true);
-            Truck Truck1 = new Truck(temp4, "F150", "BuyerA", "LX", false);
-            Truck Truck2 = new Truck(temp1, "F250", "BuyerB", "LX", false);
-            Truck Truck3 = new Truck(temp5, "F350", "BuyerC", "EX", true);
-
-            add(Car1);
-            add(Car2);
-            add(Car3);
-            add(Truck1);
-            add(Truck2);
-            add(Truck3);
-        } catch (ParseException e) {
-            throw new RuntimeException("Error in testing, creation of list");
-        }
-
-    }
-
-/*
-   Here is the instructor's test data.  This will be the starting point for project
-   demonstration day.
- SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         GregorianCalendar temp1 = new GregorianCalendar();
         GregorianCalendar temp2 = new GregorianCalendar();
         GregorianCalendar temp3 = new GregorianCalendar();
@@ -588,5 +656,4 @@ public class ListEngine extends AbstractTableModel {
             throw new RuntimeException("Error in testing, creation of list");
         }
     }
- */
 }
