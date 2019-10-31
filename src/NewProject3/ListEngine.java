@@ -13,26 +13,56 @@ import java.util.Scanner;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/*********************************************************************
+ * A car dealership program that allows you to purchase vehicles for
+ * your inventory and sell to customers. Data is presented in
+ * sorted lists across three main screens.
+ *
+ * @author Katie Cussans, Jason Kaip
+ * @version Fall 2019
+ ********************************************************************/
 
 public class ListEngine extends AbstractTableModel {
-
+    /**Static variable defining the bought screen screen*/
+    private static final int defaultScrn = -1;
+    /**Static variable defining the bought screen screen*/
     private static final int boughtScrn = 0;
+    /**Static variable defining the sold screen screen*/
     private static final int soldScrn = 1;
+    /**Static variable defining the "90 days overdue screen" screen*/
     private static final int overDueScrn = 2;
 
+    /**Array list used to store vehicle information objects*/
     private ArrayList<Auto> listAutos;
+    /**Array list containing vehicle information that will be sorted*/
     private ArrayList<Auto> filteredListAutos;
 
-    int display = -1;
+    /**Sets display value to the default*/
+    private int display = defaultScrn;
 
+    /**String array containing the headers for the bought screen*/
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
             "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
 
+    /**String array containing the headers for the sold screen*/
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
             "Sold For", "Sold On"};
 
+    /**String array containing the headers for the 90 days overdue screen*/
     private String[] columnNamesOverDue = {"Auto Name", "Bought Cost", "Bought Date", "Days overDue"};
 
+    /*********************************************************************
+     * Gets the column header using one of the columnNames string arrays
+     * and a column (col) number.
+     *
+     * @param col The column for which to pull the header for.
+     * @return columnNamesSold Returns column names for the sold screen
+     * if display is set to soldScrn.
+     * @return columnNamesOverDue Returns column names for the sold screen
+     * if display is set to overDueScrn.
+     * @return columnNamesBought Returns column names for the sold screen
+     * if display is set to neither soldScrn or overDueScrn.
+     ********************************************************************/
     @Override
     public String getColumnName(int col) {
         switch(display){
@@ -48,6 +78,12 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Constructor initializes array lists listAutos and filteredListAutos
+     * and creates the table.
+     *
+     * @return None
+     ********************************************************************/
     public ListEngine() {
         super();
         listAutos = new ArrayList<Auto>();
@@ -55,73 +91,114 @@ public class ListEngine extends AbstractTableModel {
         createList();
     }
 
+    /*********************************************************************
+     * Sets variable display to boughtScrn, soldScrn, or overDueScrn
+     * respective to the user's selection in the file menu.
+     *
+     * @param selected The screen selected by the user.
+     * @return None
+     ********************************************************************/
     public void setDisplay(int selected){
         display = selected;
         updateScreen();
     }
 
+    /*********************************************************************
+     * Gets the display.
+     *
+     * @return display The current value of display.
+     ********************************************************************/
     public int getDisplay(){
         return display;
     }
 
-    public Auto remove(int i) {
-        return null;
-    }
+    //Not in use. Will delete before turn in.
+//    /*********************************************************************
+//     * Gets the display.
+//     *
+//     * @return display The current value of display.
+//     ********************************************************************/
+//    public Auto remove(int i) {
+//        return null;
+//    }
 
+    /*********************************************************************
+     * Adds vehicle to listAutos array list if display is set to
+     * the default and adds to filteredListAutos if a screen has been selected.
+     *
+     * @param a Object with all vehicle information.
+     * @return None
+     ********************************************************************/
     public void add(Auto a) {
         switch(display){
-            case soldScrn:
-                filteredListAutos.add(a);
-            case overDueScrn:
-                filteredListAutos.add(a);
-            case boughtScrn:
-                filteredListAutos.add(a);
-            default:
+            case defaultScrn:
                 listAutos.add(a);
+            default:
+                filteredListAutos.add(a);
         }
         fireTableDataChanged();
     }
 
+    /*********************************************************************
+     * Gets vehicle information.
+     *
+     * @param i Index of vehicle to retrieve.
+     * @return listAutos if display is set to default value.
+     * @return filteredListAutos if user has selected a screen.
+     ********************************************************************/
     public Auto get(int i) {
         switch(display){
-            case soldScrn:
-                return filteredListAutos.get(i);
-            case overDueScrn:
-                return filteredListAutos.get(i);
-            case boughtScrn:
-                return filteredListAutos.get(i);
-            default:
+            case defaultScrn:
                 return listAutos.get(i);
-        }
-    }
-
-    public int getSize() {
-        switch(display){
-            case soldScrn:
-                return filteredListAutos.size();
-            case overDueScrn:
-                return filteredListAutos.size();
-            case boughtScrn:
-                return filteredListAutos.size();
             default:
-                return listAutos.size();
+                return filteredListAutos.get(i);
         }
     }
 
+    //Not in use. will delete before hand in if we don't need it.
+//    /*********************************************************************
+//     * Gets the size.
+//     *
+//     * @return display The current value of display.
+//     ********************************************************************/
+//    public int getSize() {
+//        switch(display){
+//            case soldScrn:
+//                return filteredListAutos.size();
+//            case overDueScrn:
+//                return filteredListAutos.size();
+//            case boughtScrn:
+//                return filteredListAutos.size();
+//            default:
+//                return listAutos.size();
+//        }
+//    }
+
+    /*********************************************************************
+     * Gets the number of how many rows there are in a list.
+     *
+     * @return listAutos Returns size of listAutos if display is set to default.
+     * @return filteredListAutos Returns size of filteredListAutos if
+     * user has selected a screen.
+     ********************************************************************/
     @Override
     public int getRowCount() {
         switch(display){
-            case soldScrn:
-                return filteredListAutos.size();
-            case overDueScrn:
-                return filteredListAutos.size();
-            case boughtScrn:
-                return filteredListAutos.size();
-            default:
+            case defaultScrn:
                 return listAutos.size();
+            default:
+                return filteredListAutos.size();
         }
     }
 
+    /*********************************************************************
+     * Gets the number of headers contained in an ColumnNames array.
+     *
+     * @return columnNamesSold Returns if display is set to soldScrn.
+     * @return columnNamesOverDue Returns if display is set to overDueScrn.
+     * @return columnNamesBought Returns if display is set to neither
+     * soldScrn or overDueScrn.
+     ********************************************************************/
     @Override
     public int getColumnCount() {
         switch(display){
@@ -133,6 +210,11 @@ public class ListEngine extends AbstractTableModel {
                 return columnNamesBought.length;
         }    }
 
+    /*********************************************************************
+     * Gets a certain detail of information for a vehicle .
+     *THIS IS NOT DONE, JASON.
+     * @return display The current value of display.
+     ********************************************************************/
     @Override
     public Object getValueAt(int row, int col) {
         switch(display){
