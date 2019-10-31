@@ -97,13 +97,14 @@ public class boughtCarDialog extends JDialog implements ActionListener {
             closeStatus = OK;
             SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             GregorianCalendar temp = new GregorianCalendar();
-
-            Date d = null;
+            df.setLenient(false);
+            Date d;
             try {
                 d = df.parse(txtDate.getText());
                 temp.setTime(d);
             } catch (ParseException e1) {
                 System.out.println("Invalid Date."); // Change this later
+                JOptionPane.showMessageDialog(null, "Invalid date. Setting date to default day.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
 
             auto.setBoughtOn(temp);
@@ -116,6 +117,9 @@ public class boughtCarDialog extends JDialog implements ActionListener {
             else
                 ((Car) auto).setTurbo(false);
 
+        }
+        if (button == cancelButton) {
+            dispose();
         }
         // make the dialog disappear
         dispose();
