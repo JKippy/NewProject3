@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -80,24 +81,27 @@ public class soldOnDialog extends JDialog implements ActionListener {
 
         // if OK clicked the fill the object
         if (button == okButton) {
-            // save the information in the object
             closeStatus = OK;
-            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
             GregorianCalendar temp = new GregorianCalendar();
+            SimpleDateFormat df;
 
-            Date d = null;
+            Date d;
             try {
+                df = new SimpleDateFormat("MM/dd/yyyy");
+                df.setLenient(false);
                 d = df.parse(txtDate.getText());
                 temp.setTime(d);
-
             } catch (ParseException e1) {
-//                  Do some thing good, what I am not sure.
+                JOptionPane.showMessageDialog(null, "Invalid date. Setting date to default day.", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
             auto.setNameOfBuyer(txtName.getText());
             auto.setSoldOn(temp);
             auto.setSoldPrice(Double.parseDouble(txtCost.getText()));
         }
-        // make the dialog disappear
+
+        if(button == cancelButton) {
+            dispose();
+        }
         dispose();
     }
 
