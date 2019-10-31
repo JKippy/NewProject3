@@ -168,6 +168,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
             DList.setDisplay(1);
             repaint();
             soldItem.setEnabled(false);
+            boughtCarItem.setEnabled(false);
+            boughtTruckItem.setEnabled(false);
         }
 
         if(comp == overDueScreen){
@@ -198,8 +200,12 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			if(index > -1) {
 				Auto unit = DList.get(index);
 				soldOnDialog dialog = new soldOnDialog(this, unit);
-				JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
-				DList.setDisplay(0);
+				if(dialog.getCloseStatus() == boughtCarDialog.OK){
+					JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
+					DList.setDisplay(0);
+				} else{
+					DList.setDisplay(0);
+				}
 			}
 			else
 				JOptionPane.showMessageDialog(null, "Please select a vehicle");
