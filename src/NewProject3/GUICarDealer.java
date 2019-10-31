@@ -149,10 +149,12 @@ public class GUICarDealer extends JFrame implements ActionListener{
 				if (openSerItem == e.getSource()) {
 					DList.loadDatabase(filename);
 					System.out.println("Open serialized");
+					DList.setDisplay(0);
 				}
 				if(openTextItem == e.getSource()) {
 					DList.loadFromText(filename);
 					System.out.println("Opened by text");
+					DList.setDisplay(0);
 				}
 			}
 		}
@@ -175,6 +177,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			boughtScreen.setSelected(false);
 			overDueScreen.setSelected(false);
             soldItem.setEnabled(false);
+			boughtCarItem.setEnabled(false);
+			boughtTruckItem.setEnabled(false);
         }
 
         if(comp == overDueScreen){
@@ -183,6 +187,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			soldScreen.setSelected(false);
 			boughtScreen.setSelected(false);
             soldItem.setEnabled(true);
+            boughtCarItem.setEnabled(false);
+            boughtTruckItem.setEnabled(false);
         }
 
 		//MenuBar options
