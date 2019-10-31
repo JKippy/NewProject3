@@ -201,7 +201,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
 				Auto unit = DList.get(index);
 				soldOnDialog dialog = new soldOnDialog(this, unit);
 				if(dialog.getCloseStatus() == boughtCarDialog.OK){
-					JOptionPane.showMessageDialog(null, " Cost:" + unit.getCost());
+					JOptionPane.showMessageDialog(null, "Sold Successfully! For the sales person, be sure to thank " + unit.getNameOfBuyer() +
+                            " for buying the " + unit.getAutoName()+".\nThe price difference was: $" + (unit.getSoldPrice() - unit.getBoughtCost()) + ".");
 					DList.setDisplay(0);
 				} else{
 					DList.setDisplay(0);
