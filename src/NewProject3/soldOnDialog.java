@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -42,9 +43,13 @@ public class soldOnDialog extends JDialog implements ActionListener {
         // prevent user from closing window
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String stringDate = df.format(date);
+
         // instantiate and display two text fields
         txtName = new JTextField("Joe",30);
-        txtDate = new JTextField("10/17/2018",15);
+        txtDate = new JTextField(stringDate,15);
         txtCost = new JTextField("14000.00",15);
 
         JPanel textPanel = new JPanel();

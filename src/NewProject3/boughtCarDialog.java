@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -43,6 +44,10 @@ public class boughtCarDialog extends JDialog implements ActionListener {
         // prevent user from closing window
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String stringDate = df.format(date);
+
         // instantiate and display two text fields
         txtName = new JTextField("F150",30);
         txtDate = new JTextField(15);
@@ -50,7 +55,7 @@ public class boughtCarDialog extends JDialog implements ActionListener {
         txtTrimPackage = new JTextField("LT",15);
         txtCost = new JTextField("10100.00", 15);
 
-        txtDate.setText("10/17/2018");
+        txtDate.setText(stringDate);
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(7,2));
 
