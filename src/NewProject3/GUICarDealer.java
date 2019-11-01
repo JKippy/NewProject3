@@ -215,13 +215,13 @@ public class GUICarDealer extends JFrame implements ActionListener{
 			if(index > -1) {
 				Auto unit = DList.get(index);
 				soldOnDialog dialog = new soldOnDialog(this, unit);
-				JOptionPane.showMessageDialog(null, "Be sure to thank "+unit.getNameOfBuyer()+
-						" for buying the "+unit.getAutoName()+". The difference in price was $" + (unit.getSoldPrice() - unit.getBoughtCost()));
-				System.out.println(DList.getDisplay());
-				if(DList.getDisplay() == 2)
-					DList.setDisplay(2);
-				else
-					DList.setDisplay(0);
+				if(unit.getSoldOn() == null){
+					JOptionPane.showMessageDialog(null, "No car was sold.");
+				} else {
+					JOptionPane.showMessageDialog(null, "Be sure to thank " + unit.getNameOfBuyer() +
+							" for buying the " + unit.getAutoName() + ". The difference in price was $" + (unit.getSoldPrice() - unit.getBoughtCost()));
+				}
+				DList.setDisplay(0);
 				repaint();
 			}
 			else
