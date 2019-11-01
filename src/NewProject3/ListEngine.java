@@ -13,26 +13,56 @@ import java.util.Scanner;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/*********************************************************************
+ * A car dealership program that allows you to purchase vehicles for
+ * your inventory and sell to customers. Data is presented in
+ * sorted lists across three main screens.
+ *
+ * @author Katie Cussans, Jason Kaip
+ * @version Fall 2019
+ ********************************************************************/
 
 public class ListEngine extends AbstractTableModel {
-
+    /**Static variable defining the bought screen screen*/
+    private static final int defaultScrn = -1;
+    /**Static variable defining the bought screen screen*/
     private static final int boughtScrn = 0;
+    /**Static variable defining the sold screen screen*/
     private static final int soldScrn = 1;
+    /**Static variable defining the "90 days overdue screen" screen*/
     private static final int overDueScrn = 2;
 
+    /**Array list used to store vehicle information objects*/
     private ArrayList<Auto> listAutos;
+    /**Array list containing vehicle information that will be sorted*/
     private ArrayList<Auto> filteredListAutos;
 
-    int display = -1;
+    /**Sets display value to the default*/
+    private int display = defaultScrn;
 
+    /**String array containing the headers for the bought screen*/
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
             "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
 
+    /**String array containing the headers for the sold screen*/
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
             "Sold For", "Sold On"};
 
+    /**String array containing the headers for the 90 days overdue screen*/
     private String[] columnNamesOverDue = {"Auto Name", "Bought Cost", "Bought Date", "Days overDue"};
 
+    /*********************************************************************
+     * Gets the column header using one of the columnNames string arrays
+     * and a column (col) number.
+     *
+     * @param col The column for which to pull the header for.
+     * @return columnNamesSold Returns column names for the sold screen
+     * if display is set to soldScrn.
+     * @return columnNamesOverDue Returns column names for the sold screen
+     * if display is set to overDueScrn.
+     * @return columnNamesBought Returns column names for the sold screen
+     * if display is set to neither soldScrn or overDueScrn.
+     ********************************************************************/
     @Override
     public String getColumnName(int col) {
         switch(display){
@@ -48,6 +78,12 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Constructor initializes array lists listAutos and filteredListAutos
+     * and creates the table.
+     *
+     * @return None
+     ********************************************************************/
     public ListEngine() {
         super();
         listAutos = new ArrayList<Auto>();
@@ -55,19 +91,43 @@ public class ListEngine extends AbstractTableModel {
         createList();
     }
 
+    /*********************************************************************
+     * Sets variable display to boughtScrn, soldScrn, or overDueScrn
+     * respective to the user's selection in the file menu.
+     *
+     * @param selected The screen selected by the user.
+     * @return None
+     ********************************************************************/
     public void setDisplay(int selected){
         display = selected;
         updateScreen();
     }
 
+    /*********************************************************************
+     * Gets the display.
+     *
+     * @return display The current value of display.
+     ********************************************************************/
     public int getDisplay(){
         return display;
     }
 
+    /*********************************************************************
+     * Removes a vehicle from the list.
+     *
+     * @return null Replaces vehicle in list with null.
+     ********************************************************************/
     public Auto remove(int i) {
         return null;
     }
 
+    /*********************************************************************
+     * Adds vehicle to listAutos array list if display is set to
+     * the default and adds to filteredListAutos if a screen has been selected.
+     *
+     * @param a Object with all vehicle information.
+     * @return None
+     ********************************************************************/
     public void add(Auto a) {
         switch(display){
             case soldScrn:
@@ -82,6 +142,13 @@ public class ListEngine extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    /*********************************************************************
+     * Gets vehicle information.
+     *
+     * @param i Index of vehicle to retrieve.
+     * @return listAutos if display is set to default value.
+     * @return filteredListAutos if user has selected a screen.
+     ********************************************************************/
     public Auto get(int i) {
         switch(display){
             case soldScrn:
@@ -95,6 +162,11 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Gets the size.
+     *
+     * @return display The current value of display.
+     ********************************************************************/
     public int getSize() {
         switch(display){
             case soldScrn:
@@ -108,6 +180,13 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Gets the number of how many rows there are in a list.
+     *
+     * @return listAutos Returns size of listAutos if display is set to default.
+     * @return filteredListAutos Returns size of filteredListAutos if
+     * user has selected a screen.
+     ********************************************************************/
     @Override
     public int getRowCount() {
         switch(display){
@@ -122,6 +201,14 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Gets the number of headers contained in an ColumnNames array.
+     *
+     * @return columnNamesSold Returns if display is set to soldScrn.
+     * @return columnNamesOverDue Returns if display is set to overDueScrn.
+     * @return columnNamesBought Returns if display is set to neither
+     * soldScrn or overDueScrn.
+     ********************************************************************/
     @Override
     public int getColumnCount() {
         switch(display){
@@ -133,6 +220,61 @@ public class ListEngine extends AbstractTableModel {
                 return columnNamesBought.length;
         }    }
 
+    /*********************************************************************
+     * Gets a certain detail about a specified vehicle .
+     *
+     * @param col The column for which we are retrieving information for.
+     * @param row The index for a vehicle in the list.
+     * @return filteredListAutos.get(row).getAutoName() Returns name of
+     * a the specified vehicle in filteredListAutos.
+     * @return filteredListAutos.get(row).getBoughtCost() Returns the amount
+     * the specified vehicle in filteredListAutos was bought for.
+     * @return DateFormat.getDateInstance(DateFormat.SHORT)
+     * .format(filteredListAutos.get(row).getBoughtOn().getTime()) Returns
+     * the date the specified vehicle in filteredListAutos was bought on.
+     * @return filteredListAutos.get(row).getNameOfBuyer() Returns the
+     * name of buyer for the specified sold vehicle in filteredListAutos.
+     * @return filteredListAutos.get(row).getSoldPrice() Returns the price
+     * a the specified vehicle in filteredListAutos was sold for.
+     * @return DateFormat.getDateInstance(DateFormat.SHORT)
+     * .format(filteredListAutos.get(row).getSoldOn().getTime()) Returns the
+     * date the specified vehicle in filteredListAutos was sold on.
+     * @return filteredListAutos.get(row).getOverDueDays() Returns the number
+     * of days past the bought date for the specified vehicle in filteredListAutos.
+     * @return filteredListAutos.get(row).getTrim() Returns the trim level
+     * for the specified vehicle in filteredListAutos.
+     * @return ((Truck) filteredListAutos.get(row)).isFourByFour() If the vehicle
+     * defined by the index number is a truck and the column number is 4, it
+     * will return if the truck is a four by four.
+     * @return "-" If the vehicle in filteredListAutos is not a truck,
+     * "-" will be returned for the column.
+     * @return ((Car) filteredListAutos.get(row)).isTurbo() If the vehicle
+     * defined by the index number is a car and the column number is 5, it
+     * will return if the car has turbo.
+     * @return "-" If the vehicle in filteredListAutos is not a car,
+     * "-" will be returned for that column.
+     * @return listAutos.get(row).getAutoName() Returns the name of the
+     * specified vehicle in listAutos.
+     * @return listAutos.get(row).getBoughtCost() Returns the amount the
+     * specified vehicle in listAutos was bought for.
+     * @return DateFormat.getDateInstance(DateFormat.SHORT)
+     * .format(listAutos.get(row).getBoughtOn().getTime()) Returns the
+     * date the specified vehicle in listAutos was sold on.
+     * @return listAutos.get(row).getTrim() Returns the trim level
+     * for the specified vehicle in listAutos.
+     * @return (( Truck) listAutos.get(row)).isFourByFour() If the vehicle
+     * defined by the index number is a truck and the column number is 4, it
+     * will return if the truck is a four by four.
+     * @return "-" If the vehicle in listAutos is not a truck,
+     * "-" will be returned for the column.
+     * @return ((Car) listAutos.get(row)).isTurbo() If the vehicle
+     * defined by the index number is a car and the column number is 5, it
+     * will return if the car has turbo.
+     * @return "-" If the vehicle in listAutos is not a car,
+     * "-" will be returned for that column.
+     * @throws RuntimeException Throws exception if parameters row or col
+     * are out of range.
+     ********************************************************************/
     @Override
     public Object getValueAt(int row, int col) {
         switch(display){
@@ -243,6 +385,12 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Updates the table with a sorted list based on which display is
+     * currently selected.
+     *
+     * @return none.
+     ********************************************************************/
     public void updateScreen(){
         switch(display){
             case soldScrn:
@@ -263,6 +411,13 @@ public class ListEngine extends AbstractTableModel {
         fireTableStructureChanged();
     }
 
+    /*********************************************************************
+     * Saves listAutos to a file as a serializable.
+     *
+     * @param filename Name of the file where the data is being saved to.
+     * @exception IOException Displays message if error occurs when
+     * saving file.
+     ********************************************************************/
     public void saveDatabase(String filename) {
         try {
             FileOutputStream fos = new FileOutputStream(filename);
@@ -275,6 +430,13 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*********************************************************************
+     * Loads listAutos as a serializable from a file.
+     *
+     * @param filename Name of the file where the data is being loaded from.
+     * @exception IOException Displays message if error occurs when
+     * loading file.
+     ********************************************************************/
     public void loadDatabase(String filename) {
         try {
             FileInputStream fis = new FileInputStream(filename);
@@ -289,11 +451,12 @@ public class ListEngine extends AbstractTableModel {
     }
 
     /*****************************************************************
-     * The following code is half baked code. It should help you
-     * understand how to save to a text file.
+     * Saves listAutos as text in a file.
      *
-     * @param filename Name of the file where the data is being loaded from
-     */
+     * @param filename Name of the file where the data is being saved to.
+     * @exception IOException Catches exception created from invalid file name.
+     * @throws IllegalArgumentException Thrown after catching IOException.
+     ******************************************************************/
     public void saveAsText(String filename) {
         PrintWriter pw = null;
         try {
@@ -350,13 +513,12 @@ public class ListEngine extends AbstractTableModel {
     }
 
     /*****************************************************************
-     * The following code is half baked code. It should help you
-     * understand how to load to a text file.  THis code does NOT
-     * function correctyly but, should give you a great start to
-     * your code.
+     * Loads listAutos as text from a file.
      *
-     * @param filename Name of the file where the data is being stored in
-     */
+     * @param filename Name of the file where the data is being loaded from.
+     * @exception Exception Catches exception if error occurs while loading data.
+     * @throws IllegalArgumentException Thrown after catching Exception.
+     ******************************************************************/
     public void loadFromText(String filename) {
         try{
             listAutos.clear();
@@ -421,6 +583,13 @@ public class ListEngine extends AbstractTableModel {
         }
     }
 
+    /*****************************************************************
+     * Saves listAutos as text in a file.
+     *
+     * @return none.
+     * @exception ParseException catches exception from error in creating list.
+     * @throws RuntimeException after catching ParseException.
+     ******************************************************************/
     public void createList() {
 
         // This code has been provided to get you started on the project.
