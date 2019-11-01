@@ -79,7 +79,7 @@ public class ListEngine extends AbstractTableModel {
      * Constructor initializes array lists listAutos and filteredListAutos
      * and creates the table.
      *
-     * @return None
+     * @return None.
      ********************************************************************/
     public ListEngine() {
         super();
