@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -43,6 +44,10 @@ public class boughtTruckDialog extends JDialog implements ActionListener {
         // prevent user from closing window
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String stringDate = df.format(date);
+
         // instantiate and display two text fields
         txtName = new JTextField("F150",30);
         txtDate = new JTextField(15);
@@ -51,7 +56,7 @@ public class boughtTruckDialog extends JDialog implements ActionListener {
         txtCost = new JTextField("10100.00", 15);
 
 
-        txtDate.setText("10/17/2018");
+        txtDate.setText(stringDate);
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(7,2));
 
@@ -100,21 +105,56 @@ public class boughtTruckDialog extends JDialog implements ActionListener {
             GregorianCalendar temp = new GregorianCalendar();
             df.setLenient(false);
             Date d;
-            try {
-                d = df.parse(txtDate.getText());
-                temp.setTime(d);
-            } catch (ParseException e1) {
-                JOptionPane.showMessageDialog(null, "Invalid date. Setting date to default day.", "ERROR", JOptionPane.ERROR_MESSAGE);
+            Date currentDate;
+            boolean validDate = false;
+            int count = 0;
+
+            while(!validDate) {
+                try {
+                    d = df.parse(txtDate.getText());
+                    temp.setTime(d);
+                    currentDate = Calendar.getInstance().getTime();
+                    if (d.compareTo(currentDate) > 0)
+                        throw new Exception();
+                    validDate = true;
+                } catch (Exception e1) {
+                    count++;
+                    this.txtDate.setText(df.format(Calendar.getInstance().getTime()));
+                    JOptionPane.showMessageDialog(null, "Invalid date. Setting date to current day.", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    if(count == 5){
+                        validDate = true;
+                    }
+                }
+            }
+
+            double temp2 = 5000.0;
+            boolean validPrice = false;
+            int count2 = 0;
+            while(!validPrice) {
+                try {
+                    temp2 = Double.parseDouble(txtCost.getText());
+                    validPrice = true;
+                } catch (Exception e1) {
+                    count2++;
+                    txtCost.setText("5000.0");
+                    JOptionPane.showMessageDialog(null, "Invalid price. Setting price to default of $5000.0", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    if(count2 == 5){
+                        validPrice = true;
+                    }
+                }
             }
 
             auto.setBoughtOn(temp);
             auto.setAutoName(txtName.getText());
-            auto.setBoughtCost(Double.parseDouble(txtCost.getText()));
+            auto.setBoughtCost(temp2);
             auto.setTrim(txtTrimPackage.getText());
 
             if (txtFourbyFour.getText().equalsIgnoreCase("true"))
                 ((Truck) auto).setFourByFour(true);
+            else if (txtFourbyFour.getText().equalsIgnoreCase("false"))
+                ((Truck) auto).setFourByFour(false);
             else
+                JOptionPane.showMessageDialog(null, "Invalid four by four input. Set to false default.", "ERROR", JOptionPane.ERROR_MESSAGE);
                 ((Truck) auto).setFourByFour(false);
         }
 
