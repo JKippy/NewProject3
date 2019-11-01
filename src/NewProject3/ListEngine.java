@@ -461,55 +461,55 @@ public class ListEngine extends AbstractTableModel {
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
-        } catch (IOException ex) {
-            throw new IllegalArgumentException();
-        }
 
-        Auto auto;
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            Auto auto;
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 
-        pw.println(listAutos.size());
+            pw.println(listAutos.size());
 
-        for(int i = 0; i < listAutos.size(); i++) {
-            auto = listAutos.get(i);
+            for(int i = 0; i < listAutos.size(); i++) {
+                auto = listAutos.get(i);
 
-            if(auto instanceof Car) {
-                pw.println("Car");
-                pw.println(((Car) auto).isTurbo());
-            } else {
-                pw.println("Truck");
-                pw.println(((Truck) auto).isFourByFour());
+                if(auto instanceof Car) {
+                    pw.println("Car");
+                    pw.println(((Car) auto).isTurbo());
+                } else {
+                    pw.println("Truck");
+                    pw.println(((Truck) auto).isFourByFour());
+                }
+
+                pw.println(auto.getAutoName());
+                pw.println(auto.getBoughtCost());
+
+                GregorianCalendar tempBoughtDate;
+                tempBoughtDate = auto.getBoughtOn();
+
+                pw.println(df.format(tempBoughtDate.getTime()));
+
+                pw.println(auto.getTrim());
+
+                if(auto.getNameOfBuyer() != null)
+                    pw.println(auto.getNameOfBuyer());
+                else
+                    pw.println("No buyer's name");
+
+                pw.println(auto.getSoldPrice());
+
+                GregorianCalendar tempSoldDate;
+                tempSoldDate = auto.getSoldOn();
+
+                if(tempSoldDate != null) {
+                    pw.println(df.format(tempSoldDate.getTime()));
+                }  else
+                    pw.println("No sold date");
+
+                //90 days overdue here
             }
 
-            pw.println(auto.getAutoName());
-            pw.println(auto.getBoughtCost());
-
-            GregorianCalendar tempBoughtDate;
-            tempBoughtDate = auto.getBoughtOn();
-
-            pw.println(df.format(tempBoughtDate.getTime()));
-
-            pw.println(auto.getTrim());
-
-            if(auto.getNameOfBuyer() != null)
-                pw.println(auto.getNameOfBuyer());
-            else
-                pw.println("No buyer's name");
-
-            pw.println(auto.getSoldPrice());
-
-            GregorianCalendar tempSoldDate;
-            tempSoldDate = auto.getSoldOn();
-
-            if(tempSoldDate != null) {
-                pw.println(df.format(tempSoldDate.getTime()));
-            }  else
-                pw.println("No sold date");
-
-            //90 days overdue here
+            pw.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error in saving as text");
         }
-
-        pw.close();
     }
 
     /*****************************************************************
@@ -578,8 +578,7 @@ public class ListEngine extends AbstractTableModel {
             fireTableDataChanged();
             fileReader.close();
         } catch(Exception e) {
-            System.out.println("Error");
-            throw new IllegalArgumentException();
+            JOptionPane.showMessageDialog(null, "Error in loading from text");
         }
     }
 

@@ -206,4 +206,59 @@ public class ListEngineTest {
         test.updateScreen();
         assertEquals(test.get(0).getAutoName(), test.getValueAt(0, 10));
     }
+
+    @Test
+    public void testSaveLoadDatabase() {
+        ListEngine test = new ListEngine();
+        test.saveDatabase("saveDatabaseTest");
+
+        test.add(test.get(0));
+        assertEquals(7, test.getRowCount());
+
+        test.loadDatabase("saveDatabaseTest");
+        assertEquals(6, test.getRowCount());
+    }
+
+    @Test
+    public void testSaveLoadDatabaseFail() {
+        ListEngine test = new ListEngine();
+        test.saveDatabase("/t/e/s/t");
+        test.loadDatabase("/t/e/s/t");
+    }
+
+    @Test
+    public void testSaveLoadText() {
+        ListEngine test = new ListEngine();
+        test.saveAsText("saveTextTest");
+
+        test.add(test.get(0));
+        assertEquals(7, test.getRowCount());
+
+        test.loadFromText("saveTextTest");
+        assertEquals(6, test.getRowCount());
+    }
+
+    @Test
+    public void testSaveLoadText2() {
+        ListEngine test = new ListEngine();
+
+        test.get(0).setSoldOn(test.get(0).getBoughtOn());
+        test.get(0).setNameOfBuyer("Testing");
+        test.add(test.get(0));
+
+        test.saveAsText("saveTextTest");
+
+        assertEquals(7, test.getRowCount());
+
+        test.loadFromText("saveTextTest");
+        assertEquals(7, test.getRowCount());
+    }
+
+    @Test
+    public void testSaveLoadTextFail() {
+        ListEngine test = new ListEngine();
+        test.saveAsText("/t/e/s/t");
+        test.loadFromText("/t/e/s/t");
+
+    }
 }
