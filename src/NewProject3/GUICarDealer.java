@@ -180,6 +180,8 @@ public class GUICarDealer extends JFrame implements ActionListener{
             soldScreen.setSelected(false);
             overDueScreen.setSelected(false);
             soldItem.setEnabled(true);
+			boughtCarItem.setEnabled(true);
+			boughtTruckItem.setEnabled(true);
         }
 
         if(comp == soldScreen){
@@ -197,7 +199,7 @@ public class GUICarDealer extends JFrame implements ActionListener{
             repaint();
 			soldScreen.setSelected(false);
 			boughtScreen.setSelected(false);
-            soldItem.setEnabled(true);
+            soldItem.setEnabled(false);
             boughtCarItem.setEnabled(false);
             boughtTruckItem.setEnabled(false);
         }
@@ -230,10 +232,7 @@ public class GUICarDealer extends JFrame implements ActionListener{
 					JOptionPane.showMessageDialog(null, "Be sure to thank " + unit.getNameOfBuyer() +
 							" for buying the " + unit.getAutoName() + ". The difference in price was $" + unit.getSoldBoughtCost(unit.boughtCost, unit.soldPrice));
 				}
-				if(DList.getDisplay() == 2)
-					DList.setDisplay(2);
-				else
-					DList.setDisplay(0);
+				DList.setDisplay(0);
 				repaint();
 			}
 			else

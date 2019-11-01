@@ -699,5 +699,6 @@ public class ListEngine extends AbstractTableModel {
         } catch (ParseException e) {
             throw new RuntimeException("Error in testing, creation of list");
         }
+        setDisplay(0);
     }
 }
