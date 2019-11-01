@@ -10,19 +10,37 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/*********************************************************************
+ * A dialog box that appears once a user selects to buy a car in
+ * the menu bar. Asks the user for input on the car they bought
+ * such as the name, date, trim package, cost, and if it's turbo
+ * or not.
+ *
+ * @author Katie Cussans, Jason Kaip
+ * @version Fall 2019
+ ********************************************************************/
 public class boughtCarDialog extends JDialog implements ActionListener {
-
+    /**Private variable defining the car name text field*/
     private JTextField txtName;
+    /**Private variable defining the bought date text field*/
     private JTextField txtDate;
+    /**Private variable defining the car's trim package text field*/
     private JTextField txtTrimPackage;
+    /**Private variable defining the turbo text field*/
     private JTextField txtTurbo;
+    /**Private variable defining the car's cost text field*/
     private JTextField txtCost;
+    /**Private variable defining the OK button*/
     private JButton okButton;
+    /**Private variable defining the CANCEL button*/
     private JButton cancelButton;
-    private JComboBox<String> combobox;
+    /**Private integer variable defining the close status*/
     private int closeStatus;
+    /**Private auto variable defining the car being bought*/
     private Auto auto;
+    /**Static variable defining the OK status integer value*/
     static final int OK = 0;
+    /**Static variable defining the CANCEL status integer value*/
     static final int CANCEL = 1;
 
     /*********************************************************
@@ -90,7 +108,9 @@ public class boughtCarDialog extends JDialog implements ActionListener {
     }
 
     /**************************************************************
-     Respond to either button clicks
+     Respond to either button clicks. OK Button should check for
+     valid input.
+
      @param e the action event that was just fired
      **************************************************************/
     public void actionPerformed(ActionEvent e) {

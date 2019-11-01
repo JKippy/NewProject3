@@ -42,7 +42,7 @@ public class ListEngine extends AbstractTableModel {
 
     /**String array containing the headers for the bought screen*/
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
-            "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
+            "Bought Date", "Trim Package", "Four by Four", "Turbo"};
 
     /**String array containing the headers for the sold screen*/
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
@@ -494,9 +494,6 @@ public class ListEngine extends AbstractTableModel {
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
-        } catch (IOException ex) {
-            throw new IllegalArgumentException();
-        }
 
         Auto auto;
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
@@ -543,6 +540,10 @@ public class ListEngine extends AbstractTableModel {
         }
 
         pw.close();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error in saving text file");
+        }
     }
 
     /*****************************************************************
@@ -612,7 +613,7 @@ public class ListEngine extends AbstractTableModel {
             fileReader.close();
         } catch(Exception e) {
             System.out.println("Error");
-            throw new IllegalArgumentException();
+            JOptionPane.showMessageDialog(null, "Error in loading text file");
         }
     }
 
