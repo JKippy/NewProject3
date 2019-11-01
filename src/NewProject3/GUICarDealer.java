@@ -43,9 +43,6 @@ public class GUICarDealer extends JFrame implements ActionListener{
 	/** Holds JListArea */
 	private JTable jListArea;
 
-	/** Scroll pane */
-	//private JScrollPane scrollList;
-
 	/*****************************************************************
 	 *
 	 * A constructor that starts a new GUI1024 for the rental store
@@ -229,7 +226,7 @@ public class GUICarDealer extends JFrame implements ActionListener{
 					JOptionPane.showMessageDialog(null, "No car was sold.");
 				} else {
 					JOptionPane.showMessageDialog(null, "Be sure to thank " + unit.getNameOfBuyer() +
-							" for buying the " + unit.getAutoName() + ". The difference in price was $" + (unit.getSoldPrice() - unit.getBoughtCost()));
+							" for buying the " + unit.getAutoName() + ". The difference in price was $" + unit.getSoldBoughtCost(unit.getBoughtCost(), unit.getSoldPrice()));
 				}
 				DList.setDisplay(0);
 				repaint();

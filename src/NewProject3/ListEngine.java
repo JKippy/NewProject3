@@ -87,13 +87,10 @@ public class ListEngine extends AbstractTableModel {
     public String getColumnName(int col) {
         switch (display) {
             case soldScrn:
-                System.out.println(columnNamesSold[col]);
                 return columnNamesSold[col];
             case overDueScrn:
-                System.out.println(columnNamesOverDue[col]);
                 return columnNamesOverDue[col];
             default:
-                System.out.println(columnNamesBought[col]);
                 return columnNamesBought[col];
         }
     }
@@ -424,7 +421,7 @@ public class ListEngine extends AbstractTableModel {
                 break;
             case overDueScrn:
                 filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-                filteredListAutos = (ArrayList<Auto>) filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>) filteredListAutos.stream().filter(arg -> arg.getOverDueDays() >= 90).collect(Collectors.toList());
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getOverDueDays()));
                 break;
         }
@@ -443,7 +440,7 @@ public class ListEngine extends AbstractTableModel {
             filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
         else if (display == overDueScrn) {
             filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-            filteredListAutos = (ArrayList<Auto>) filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+            filteredListAutos = (ArrayList<Auto>) filteredListAutos.stream().filter(arg -> arg.getOverDueDays() >= 90).collect(Collectors.toList());
         } else
             filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
 
@@ -689,7 +686,7 @@ public class ListEngine extends AbstractTableModel {
         } catch (ParseException e) {
             throw new RuntimeException("Error in testing, creation of list");
         }
-
+        setDisplay(0);
     }
 
 /*

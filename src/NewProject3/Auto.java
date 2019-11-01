@@ -98,6 +98,9 @@ Auto implements Serializable {
         this.trim = trim;
     }
 
+    abstract double getSoldBoughtCost(double buyPrice, double soldPrice);
+
+
     public int getOverDueDays(){
         String newDate = DateFormat.getDateInstance(DateFormat.SHORT).format(this.getBoughtOn().getTime());
         String[] splitDates = newDate.split("/", 3);
