@@ -35,7 +35,6 @@ public class ListEngineTest {
         ListEngine test = new ListEngine();
         test.setDisplay(0);
         assertEquals(test.getDisplay(), 0);
-
     }
 
     @Test
@@ -43,7 +42,6 @@ public class ListEngineTest {
         ListEngine test = new ListEngine();
         test.setDisplay(1);
         assertEquals(test.getDisplay(), 1);
-
     }
 
     @Test
@@ -51,7 +49,6 @@ public class ListEngineTest {
         ListEngine test = new ListEngine();
         test.setDisplay(2);
         assertEquals(test.getDisplay(), 2);
-
     }
 
     @Test
@@ -64,8 +61,6 @@ public class ListEngineTest {
         assertTrue(test.get(0) instanceof Truck);
         test.remove(0);
         assertTrue(test.get(0) instanceof Truck);
-
-
     }
 
     @Test
@@ -89,8 +84,6 @@ public class ListEngineTest {
     public void testGet() {
         ListEngine test = new ListEngine();
         assertEquals("Outback", test.get(0).getAutoName());
-
-
     }
 
     @Test
@@ -99,6 +92,7 @@ public class ListEngineTest {
         test.setDisplay(2);
         assertEquals("F250", test.get(0).getAutoName());
     }
+
     @Test
     public void testGetRowCount() {
         ListEngine test = new ListEngine();
@@ -135,6 +129,7 @@ public class ListEngineTest {
         test.setDisplay(2);
         assertEquals(4, test.getColumnCount());
     }
+
     @Test
     public void testGetValueAtDefault() {
         ListEngine test = new ListEngine();
@@ -153,8 +148,8 @@ public class ListEngineTest {
             else
                 assertEquals("-", test.getValueAt(j, 5));
         }
-
     }
+
     @Test
     public void testGetValueAtBought() {
         ListEngine test = new ListEngine();

@@ -104,13 +104,7 @@ Auto implements Serializable {
         month = Integer.parseInt(splitDates[0]);
         day = Integer.parseInt(splitDates[1]);
         year = 2000 + Integer.parseInt(splitDates[2]);
-
-//        System.out.println("Month: " + currentMonth + " Day: " + currentDay + " Year: " + currentYear);
-//        System.out.println("Month2: " + this.month + " Day2: " + this.day + " Year2: " + this.year);
-
         daysOverDue = daysToGo();
-
-        System.out.println("Days Over Due: " + daysOverDue);
         return daysOverDue;
     }
 

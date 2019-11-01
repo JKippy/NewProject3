@@ -55,7 +55,6 @@ public class boughtTruckDialog extends JDialog implements ActionListener {
         txtTrimPackage = new JTextField("LT",15);
         txtCost = new JTextField("10100.00", 15);
 
-
         txtDate.setText(stringDate);
         JPanel textPanel = new JPanel();
         textPanel.setLayout(new GridLayout(7,2));

@@ -43,8 +43,6 @@ public class Car extends Auto {
         this.turbo = turbo;
     }
 
-    //Worked
-
     @Override
     public String toString() {
         return "Car    " +
