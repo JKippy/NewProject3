@@ -23,13 +23,6 @@ public class Truck extends Auto {
         FourByFour = fourByFour;
     }
 
-    public Truck(GregorianCalendar boughtOn, String name,
-                 int cost, String trimPackage, boolean fourByFour) {
-        super(boughtOn, name, cost);
-        trim = trimPackage;
-        FourByFour = fourByFour;
-    }
-
     public boolean isFourByFour() {
         return FourByFour;
     }

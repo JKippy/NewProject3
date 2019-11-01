@@ -38,12 +38,6 @@ Auto implements Serializable {
         this.nameOfBuyer = nameOfBuyer;
     }
 
-    public Auto(GregorianCalendar boughtOn, String name, int boughtCost) {
-        this.boughtOn = boughtOn;
-        this.autoName = name;
-        this.boughtCost = boughtCost;
-    }
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
