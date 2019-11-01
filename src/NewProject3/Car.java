@@ -23,13 +23,6 @@ public class Car extends Auto {
         this.turbo = turbo;
     }
 
-    public Car(GregorianCalendar boughtOn,  String name,
-               int cost, String trim, boolean turbo) {
-        super(boughtOn, name, cost);
-        this.trim = trim;
-        this.turbo = turbo;
-    }
-
     public String getTrim() {
         return trim;
     }
@@ -42,9 +35,15 @@ public class Car extends Auto {
         return turbo;
     }
 
+    public void testingGithub() {
+        System.out.println("this tests github");
+    }
+
     public void setTurbo(boolean turbo) {
         this.turbo = turbo;
     }
+
+    //Worked
 
     @Override
     public String toString() {
