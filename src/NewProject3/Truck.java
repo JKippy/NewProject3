@@ -16,6 +16,11 @@ public class Truck extends Auto {
         return getBoughtCost();
     }
 
+    @Override
+    double getSoldBoughtCost(double buyPrice, double soldPrice) {
+        return soldPrice-buyPrice;
+    }
+
     public Truck(GregorianCalendar boughtOn, String name,
                  String nameOfBuyer, String trimPackage, boolean fourByFour) {
         super(boughtOn, name, nameOfBuyer);

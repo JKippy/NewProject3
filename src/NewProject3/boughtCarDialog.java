@@ -69,7 +69,7 @@ public class boughtCarDialog extends JDialog implements ActionListener {
         String stringDate = df.format(date);
 
         // instantiate and display two text fields
-        txtName = new JTextField("F150",30);
+        txtName = new JTextField("Escape",30);
         txtDate = new JTextField(15);
         txtTurbo = new JTextField("True",15);
         txtTrimPackage = new JTextField("LT",15);

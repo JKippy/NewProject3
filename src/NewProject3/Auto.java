@@ -98,19 +98,16 @@ Auto implements Serializable {
         this.trim = trim;
     }
 
+    abstract double getSoldBoughtCost(double buyPrice, double soldPrice);
+
+
     public int getOverDueDays(){
         String newDate = DateFormat.getDateInstance(DateFormat.SHORT).format(this.getBoughtOn().getTime());
         String[] splitDates = newDate.split("/", 3);
         month = Integer.parseInt(splitDates[0]);
         day = Integer.parseInt(splitDates[1]);
         year = 2000 + Integer.parseInt(splitDates[2]);
-
-//        System.out.println("Month: " + currentMonth + " Day: " + currentDay + " Year: " + currentYear);
-//        System.out.println("Month2: " + this.month + " Day2: " + this.day + " Year2: " + this.year);
-
         daysOverDue = daysToGo();
-
-        System.out.println("Days Over Due: " + daysOverDue);
         return daysOverDue;
     }
 

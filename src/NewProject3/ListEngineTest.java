@@ -35,7 +35,6 @@ public class ListEngineTest {
         ListEngine test = new ListEngine();
         test.setDisplay(0);
         assertEquals(test.getDisplay(), 0);
-
     }
 
     @Test
@@ -43,7 +42,6 @@ public class ListEngineTest {
         ListEngine test = new ListEngine();
         test.setDisplay(1);
         assertEquals(test.getDisplay(), 1);
-
     }
 
     @Test
@@ -51,7 +49,6 @@ public class ListEngineTest {
         ListEngine test = new ListEngine();
         test.setDisplay(2);
         assertEquals(test.getDisplay(), 2);
-
     }
 
     @Test
@@ -64,8 +61,6 @@ public class ListEngineTest {
         assertTrue(test.get(0) instanceof Truck);
         test.remove(0);
         assertTrue(test.get(0) instanceof Truck);
-
-
     }
 
     @Test
@@ -89,8 +84,6 @@ public class ListEngineTest {
     public void testGet() {
         ListEngine test = new ListEngine();
         assertEquals("Outback", test.get(0).getAutoName());
-
-
     }
 
     @Test
@@ -99,6 +92,7 @@ public class ListEngineTest {
         test.setDisplay(2);
         assertEquals("F250", test.get(0).getAutoName());
     }
+
     @Test
     public void testGetRowCount() {
         ListEngine test = new ListEngine();
@@ -135,6 +129,7 @@ public class ListEngineTest {
         test.setDisplay(2);
         assertEquals(4, test.getColumnCount());
     }
+
     @Test
     public void testGetValueAtDefault() {
         ListEngine test = new ListEngine();
@@ -153,8 +148,8 @@ public class ListEngineTest {
             else
                 assertEquals("-", test.getValueAt(j, 5));
         }
-
     }
+
     @Test
     public void testGetValueAtBought() {
         ListEngine test = new ListEngine();
@@ -293,46 +288,46 @@ public class ListEngineTest {
 
     }
 
-//    @Test
-//    public void testUpdateHeader() {
-//        ListEngine test = new ListEngine();
-//        test.setDisplay(0);
-//
-//        test.updateHeader(test.getColumnName(0));
-//        assertEquals(test.get(0).getAutoName(), "Chevy");
-//
-//        test.updateHeader(test.getColumnName(1));
-//        assertTrue(test.get(0).getBoughtCost() <= 2000.0);
-//
-//        test.updateHeader(test.getColumnName(2));
-//        assertEquals(DateFormat.getDateInstance(DateFormat.SHORT)
-//                .format(test.get(0).getBoughtOn().getTime()), "1/20/10");
-//
-//        test.get(0).setSoldOn(test.get(0).getBoughtOn());
-//        test.get(0).setNameOfBuyer("Test");
-//        test.get(0).setSoldOn(test.get(1).getBoughtOn());
-//        test.get(0).setNameOfBuyer("Apple");
-//        test.setDisplay(1);
-//        test.updateScreen();
-//
-//        test.updateHeader(test.getColumnName(3));
-//        assertEquals(test.get(0).getNameOfBuyer(), "Apple");
-//
-//        test.updateHeader(test.getColumnName(4));
-//        assertTrue(test.get(0).getSoldPrice() <= 0.0);
-//
-//        test.updateHeader(test.getColumnName(5));
-//        assertEquals(DateFormat.getDateInstance(DateFormat.SHORT)
-//                .format(test.get(0).getSoldOn().getTime()), "12/20/18");
-//
-//        test.setDisplay(0);
-//        test.updateScreen();
-//        test.updateHeader(test.getColumnName(3));
-//        assertEquals(test.get(0).getTrim(), "EX");
-//
-//        test.setDisplay(2);
-//        test.updateScreen();
-//        test.updateHeader(test.getColumnName(3));
-//        assertEquals(test.get(0).getOverDueDays(), 226);
-//    }
+    @Test
+    public void testUpdateHeader() {
+        ListEngine test = new ListEngine();
+        test.setDisplay(0);
+
+        test.updateHeader(test.getColumnName(0));
+        assertEquals(test.get(0).getAutoName(), "Chevy");
+
+        test.updateHeader(test.getColumnName(1));
+        assertTrue(test.get(0).getBoughtCost() <= 2000.0);
+
+        test.updateHeader(test.getColumnName(2));
+        assertEquals(DateFormat.getDateInstance(DateFormat.SHORT)
+                .format(test.get(0).getBoughtOn().getTime()), "1/20/10");
+
+        test.get(0).setSoldOn(test.get(0).getBoughtOn());
+        test.get(0).setNameOfBuyer("Test");
+        test.get(0).setSoldOn(test.get(1).getBoughtOn());
+        test.get(0).setNameOfBuyer("Apple");
+        test.setDisplay(1);
+        test.updateScreen();
+
+        test.updateHeader(test.getColumnName(3));
+        assertEquals(test.get(0).getNameOfBuyer(), "Apple");
+
+        test.updateHeader(test.getColumnName(4));
+        assertTrue(test.get(0).getSoldPrice() <= 0.0);
+
+        test.updateHeader(test.getColumnName(5));
+        assertEquals(DateFormat.getDateInstance(DateFormat.SHORT)
+                .format(test.get(0).getSoldOn().getTime()), "12/20/18");
+
+        test.setDisplay(0);
+        test.updateScreen();
+        test.updateHeader(test.getColumnName(3));
+        assertEquals(test.get(0).getTrim(), "EX");
+
+        test.setDisplay(2);
+        test.updateScreen();
+        test.updateHeader(test.getColumnName(3));
+        assertEquals(test.get(0).getOverDueDays(), 226);
+    }
 }

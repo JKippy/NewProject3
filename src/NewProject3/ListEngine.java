@@ -23,32 +23,52 @@ import java.util.stream.Collectors;
  ********************************************************************/
 
 public class ListEngine extends AbstractTableModel {
-    /**Static variable defining the bought screen screen*/
+    /**
+     * Static variable defining the bought screen screen
+     */
     private static final int defaultScrn = -1;
-    /**Static variable defining the bought screen screen*/
+    /**
+     * Static variable defining the bought screen screen
+     */
     private static final int boughtScrn = 0;
-    /**Static variable defining the sold screen screen*/
+    /**
+     * Static variable defining the sold screen screen
+     */
     private static final int soldScrn = 1;
-    /**Static variable defining the "90 days overdue screen" screen*/
+    /**
+     * Static variable defining the "90 days overdue screen" screen
+     */
     private static final int overDueScrn = 2;
 
-    /**Array list used to store vehicle information objects*/
+    /**
+     * Array list used to store vehicle information objects
+     */
     private ArrayList<Auto> listAutos;
-    /**Array list containing vehicle information that will be sorted*/
+    /**
+     * Array list containing vehicle information that will be sorted
+     */
     private ArrayList<Auto> filteredListAutos;
 
-    /**Sets display value to the default*/
+    /**
+     * Sets display value to the default
+     */
     private int display = defaultScrn;
 
-    /**String array containing the headers for the bought screen*/
+    /**
+     * String array containing the headers for the bought screen
+     */
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
             "Bought Date", "Trim Package", "Four by Four", "Turbo"};
 
-    /**String array containing the headers for the sold screen*/
+    /**
+     * String array containing the headers for the sold screen
+     */
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
             "Sold For", "Sold On"};
 
-    /**String array containing the headers for the 90 days overdue screen*/
+    /**
+     * String array containing the headers for the 90 days overdue screen
+     */
     private String[] columnNamesOverDue = {"Auto Name", "Bought Cost", "Bought Date", "Days overDue"};
 
     /*********************************************************************
@@ -65,15 +85,12 @@ public class ListEngine extends AbstractTableModel {
      ********************************************************************/
     @Override
     public String getColumnName(int col) {
-        switch(display){
+        switch (display) {
             case soldScrn:
-                System.out.println(columnNamesSold[col]);
                 return columnNamesSold[col];
             case overDueScrn:
-                System.out.println(columnNamesOverDue[col]);
                 return columnNamesOverDue[col];
             default:
-                System.out.println(columnNamesBought[col]);
                 return columnNamesBought[col];
         }
     }
@@ -98,7 +115,7 @@ public class ListEngine extends AbstractTableModel {
      * @param selected The screen selected by the user.
      * @return None
      ********************************************************************/
-    public void setDisplay(int selected){
+    public void setDisplay(int selected) {
         display = selected;
         updateScreen();
     }
@@ -108,7 +125,7 @@ public class ListEngine extends AbstractTableModel {
      *
      * @return display The current value of display.
      ********************************************************************/
-    public int getDisplay(){
+    public int getDisplay() {
         return display;
     }
 
@@ -129,7 +146,7 @@ public class ListEngine extends AbstractTableModel {
      * @return None
      ********************************************************************/
     public void add(Auto a) {
-        switch(display){
+        switch (display) {
             case soldScrn:
                 filteredListAutos.add(a);
             case overDueScrn:
@@ -150,7 +167,7 @@ public class ListEngine extends AbstractTableModel {
      * @return filteredListAutos if user has selected a screen.
      ********************************************************************/
     public Auto get(int i) {
-        switch(display){
+        switch (display) {
             case soldScrn:
                 return filteredListAutos.get(i);
             case overDueScrn:
@@ -168,7 +185,7 @@ public class ListEngine extends AbstractTableModel {
      * @return display The current value of display.
      ********************************************************************/
     public int getSize() {
-        switch(display){
+        switch (display) {
             case soldScrn:
                 return filteredListAutos.size();
             case overDueScrn:
@@ -189,7 +206,7 @@ public class ListEngine extends AbstractTableModel {
      ********************************************************************/
     @Override
     public int getRowCount() {
-        switch(display){
+        switch (display) {
             case soldScrn:
                 return filteredListAutos.size();
             case overDueScrn:
@@ -211,14 +228,15 @@ public class ListEngine extends AbstractTableModel {
      ********************************************************************/
     @Override
     public int getColumnCount() {
-        switch(display){
+        switch (display) {
             case soldScrn:
                 return columnNamesSold.length;
             case overDueScrn:
                 return columnNamesOverDue.length;
             default:
                 return columnNamesBought.length;
-        }    }
+        }
+    }
 
     /*********************************************************************
      * Gets a certain detail about a specified vehicle .
@@ -243,12 +261,12 @@ public class ListEngine extends AbstractTableModel {
      * of days past the bought date for the specified vehicle in filteredListAutos.
      * @return filteredListAutos.get(row).getTrim() Returns the trim level
      * for the specified vehicle in filteredListAutos.
-     * @return ((Truck) filteredListAutos.get(row)).isFourByFour() If the vehicle
+     * @return (( Truck) filteredListAutos.get(row)).isFourByFour() If the vehicle
      * defined by the index number is a truck and the column number is 4, it
      * will return if the truck is a four by four.
      * @return "-" If the vehicle in filteredListAutos is not a truck,
      * "-" will be returned for the column.
-     * @return ((Car) filteredListAutos.get(row)).isTurbo() If the vehicle
+     * @return (( Car) filteredListAutos.get(row)).isTurbo() If the vehicle
      * defined by the index number is a car and the column number is 5, it
      * will return if the car has turbo.
      * @return "-" If the vehicle in filteredListAutos is not a car,
@@ -267,7 +285,7 @@ public class ListEngine extends AbstractTableModel {
      * will return if the truck is a four by four.
      * @return "-" If the vehicle in listAutos is not a truck,
      * "-" will be returned for the column.
-     * @return ((Car) listAutos.get(row)).isTurbo() If the vehicle
+     * @return (( Car) listAutos.get(row)).isTurbo() If the vehicle
      * defined by the index number is a car and the column number is 5, it
      * will return if the car has turbo.
      * @return "-" If the vehicle in listAutos is not a car,
@@ -277,7 +295,7 @@ public class ListEngine extends AbstractTableModel {
      ********************************************************************/
     @Override
     public Object getValueAt(int row, int col) {
-        switch(display){
+        switch (display) {
             case soldScrn:
                 switch (col) {
                     case 0:
@@ -391,19 +409,19 @@ public class ListEngine extends AbstractTableModel {
      *
      * @return none.
      ********************************************************************/
-    public void updateScreen(){
-        switch(display){
+    public void updateScreen() {
+        switch (display) {
             case soldScrn:
-                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.nameOfBuyer));
                 break;
             case boughtScrn:
-                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getBoughtOn()));
                 break;
             case overDueScrn:
-                filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-                filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>) filteredListAutos.stream().filter(arg -> arg.getOverDueDays() >= 90).collect(Collectors.toList());
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getOverDueDays()));
                 break;
         }
@@ -416,18 +434,17 @@ public class ListEngine extends AbstractTableModel {
      *
      * @return none.
      ********************************************************************/
-    public void updateHeader(String col){
+    public void updateHeader(String col) {
         System.out.println("Sorting by " + col);
-        if(display == soldScrn)
-            filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
-        else if(display == overDueScrn){
-            filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-            filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
-        }
-        else
-            filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+        if (display == soldScrn)
+            filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
+        else if (display == overDueScrn) {
+            filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
+            filteredListAutos = (ArrayList<Auto>) filteredListAutos.stream().filter(arg -> arg.getOverDueDays() >= 90).collect(Collectors.toList());
+        } else
+            filteredListAutos = (ArrayList<Auto>) listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
 
-        switch(col){
+        switch (col) {
             case "Auto Name":
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getAutoName()));
                 break;
@@ -513,10 +530,10 @@ public class ListEngine extends AbstractTableModel {
 
             pw.println(listAutos.size());
 
-            for(int i = 0; i < listAutos.size(); i++) {
+            for (int i = 0; i < listAutos.size(); i++) {
                 auto = listAutos.get(i);
 
-                if(auto instanceof Car) {
+                if (auto instanceof Car) {
                     pw.println("Car");
                     pw.println(((Car) auto).isTurbo());
                 } else {
@@ -534,7 +551,7 @@ public class ListEngine extends AbstractTableModel {
 
                 pw.println(auto.getTrim());
 
-                if(auto.getNameOfBuyer() != null)
+                if (auto.getNameOfBuyer() != null)
                     pw.println(auto.getNameOfBuyer());
                 else
                     pw.println("No buyer's name");
@@ -544,14 +561,11 @@ public class ListEngine extends AbstractTableModel {
                 GregorianCalendar tempSoldDate;
                 tempSoldDate = auto.getSoldOn();
 
-                if(tempSoldDate != null) {
+                if (tempSoldDate != null) {
                     pw.println(df.format(tempSoldDate.getTime()));
-                }  else
+                } else
                     pw.println("No sold date");
-
-                //90 days overdue here
             }
-
             pw.close();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error in saving as text");
@@ -566,7 +580,7 @@ public class ListEngine extends AbstractTableModel {
      * @throws IllegalArgumentException Thrown after catching Exception.
      ******************************************************************/
     public void loadFromText(String filename) {
-        try{
+        try {
             listAutos.clear();
             Scanner fileReader = new Scanner(new File(filename));
 
@@ -577,7 +591,7 @@ public class ListEngine extends AbstractTableModel {
             Car tempCar;
             Truck tempTruck;
 
-            for(int i = 0; i < numOfAutos; i++) {
+            for (int i = 0; i < numOfAutos; i++) {
                 String autoType = fileReader.nextLine();
                 boolean boolAutoValue = Boolean.parseBoolean(fileReader.nextLine());
                 String autoName = fileReader.nextLine();
@@ -590,29 +604,28 @@ public class ListEngine extends AbstractTableModel {
                 String autoTrim = fileReader.nextLine();
 
                 String autoBuyerName = fileReader.nextLine();
-                if(autoBuyerName.equals("No buyer's name"))
+                if (autoBuyerName.equals("No buyer's name"))
                     autoBuyerName = null;
 
                 double autoSoldPrice = Double.parseDouble(fileReader.nextLine());
 
                 GregorianCalendar tempSoldDate = new GregorianCalendar();
                 String checkSoldDate = fileReader.nextLine();
-                if(checkSoldDate.equals("No sold date")) {
+                if (checkSoldDate.equals("No sold date")) {
                     tempSoldDate = null;
 
                 } else {
                     Date d2 = df.parse(checkSoldDate);
                     tempSoldDate.setTime(d2);
                 }
-
-                if(autoType.equals("Car")) {
+                if (autoType.equals("Car")) {
                     tempCar = new Car(tempBoughtDate, autoName, autoBuyerName, autoTrim, boolAutoValue);
                     tempCar.setBoughtCost(autoBoughtPrice);
                     tempCar.setSoldOn(tempSoldDate);
                     tempCar.setSoldPrice(autoSoldPrice);
                     listAutos.add(tempCar);
                 }
-                if(autoType.equals("Truck")) {
+                if (autoType.equals("Truck")) {
                     tempTruck = new Truck(tempBoughtDate, autoName, autoBuyerName, autoTrim, boolAutoValue);
                     tempTruck.setBoughtCost(autoBoughtPrice);
                     tempTruck.setSoldOn(tempSoldDate);
@@ -620,10 +633,9 @@ public class ListEngine extends AbstractTableModel {
                     listAutos.add(tempTruck);
                 }
             }
-
             fireTableDataChanged();
             fileReader.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error in loading from text");
         }
     }
@@ -636,9 +648,6 @@ public class ListEngine extends AbstractTableModel {
      * @throws RuntimeException after catching ParseException.
      ******************************************************************/
     public void createList() {
-
-        // This code has been provided to get you started on the project.
-
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         GregorianCalendar temp1 = new GregorianCalendar();
         GregorianCalendar temp2 = new GregorianCalendar();
@@ -661,7 +670,6 @@ public class ListEngine extends AbstractTableModel {
             Date d6 = df.parse("10/20/2019");
             temp6.setTime(d6);
 
-
             Car Car1 = new Car(temp3, "Outback", "Buyer1", "LX", false);
             Car Car2 = new Car(temp2, "Chevy", "Buyer2", "EX", false);
             Car Car3 = new Car(temp6, "Focus", "Buyer3", "EX", true);
@@ -678,7 +686,7 @@ public class ListEngine extends AbstractTableModel {
         } catch (ParseException e) {
             throw new RuntimeException("Error in testing, creation of list");
         }
-
+        setDisplay(0);
     }
 
 /*

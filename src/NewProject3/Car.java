@@ -31,6 +31,11 @@ public class Car extends Auto {
         this.trim = trim;
     }
 
+    @Override
+    double getSoldBoughtCost(double buyPrice, double soldPrice) {
+        return soldPrice - buyPrice;
+    }
+
     public boolean isTurbo() {
         return turbo;
     }
@@ -42,8 +47,6 @@ public class Car extends Auto {
     public void setTurbo(boolean turbo) {
         this.turbo = turbo;
     }
-
-    //Worked
 
     @Override
     public String toString() {
