@@ -42,7 +42,7 @@ public class ListEngine extends AbstractTableModel {
 
     /**String array containing the headers for the bought screen*/
     private String[] columnNamesBought = {"Auto Name", "Bought Cost",
-            "Bought Date", "Trim Package ", "Four by Four", "Turbo"};
+            "Bought Date", "Trim Package", "Four by Four", "Turbo"};
 
     /**String array containing the headers for the sold screen*/
     private String[] columnNamesSold = {"Auto Name", "Bought Cost", "Bought Date", "Buyer's Name",
