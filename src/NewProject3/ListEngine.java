@@ -648,6 +648,8 @@ public class ListEngine extends AbstractTableModel {
      * @throws RuntimeException after catching ParseException.
      ******************************************************************/
     public void createList() {
+        /*Here is the instructor's test data.  This will be the starting point for project
+         demonstration day.*/
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         GregorianCalendar temp1 = new GregorianCalendar();
         GregorianCalendar temp2 = new GregorianCalendar();
@@ -655,7 +657,6 @@ public class ListEngine extends AbstractTableModel {
         GregorianCalendar temp4 = new GregorianCalendar();
         GregorianCalendar temp5 = new GregorianCalendar();
         GregorianCalendar temp6 = new GregorianCalendar();
-
         try {
             Date d1 = df.parse("3/20/2019");
             temp1.setTime(d1);
@@ -669,14 +670,12 @@ public class ListEngine extends AbstractTableModel {
             temp5.setTime(d5);
             Date d6 = df.parse("10/20/2019");
             temp6.setTime(d6);
-
-            Car Car1 = new Car(temp3, "Outback", "Buyer1", "LX", false);
-            Car Car2 = new Car(temp2, "Chevy", "Buyer2", "EX", false);
-            Car Car3 = new Car(temp6, "Focus", "Buyer3", "EX", true);
-            Truck Truck1 = new Truck(temp4, "F150", "BuyerA", "LX", false);
-            Truck Truck2 = new Truck(temp1, "F250", "BuyerB", "LX", false);
-            Truck Truck3 = new Truck(temp5, "F350", "BuyerC", "EX", true);
-
+            Car Car1 = new Car(temp1, "Outback", 18000, "LX", false);
+            Car Car2 = new Car(temp2, "Chevy", 11000, "EX", false);
+            Car Car3 = new Car(temp3, "Focus", 19000, "EX", true);
+            Truck Truck1 = new Truck(temp4, "F150", 12000, "Tow", false);
+            Truck Truck2 = new Truck(temp5, "F250", 42000, "NA", false);
+            Truck Truck3 = new Truck(temp1, "F350", 2000, "Turbo", true);
             add(Car1);
             add(Car2);
             add(Car3);
@@ -687,46 +686,44 @@ public class ListEngine extends AbstractTableModel {
             throw new RuntimeException("Error in testing, creation of list");
         }
         setDisplay(0);
-    }
 
-/*
-   Here is the instructor's test data.  This will be the starting point for project
-   demonstration day.
- SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        GregorianCalendar temp1 = new GregorianCalendar();
-        GregorianCalendar temp2 = new GregorianCalendar();
-        GregorianCalendar temp3 = new GregorianCalendar();
-        GregorianCalendar temp4 = new GregorianCalendar();
-        GregorianCalendar temp5 = new GregorianCalendar();
-        GregorianCalendar temp6 = new GregorianCalendar();
-        try {
-            Date d1 = df.parse("3/20/2019");
-            temp1.setTime(d1);
-            Date d2 = df.parse("9/20/2019");
-            temp2.setTime(d2);
-            Date d3 = df.parse("12/20/2018");
-            temp3.setTime(d3);
-            Date d4 = df.parse("9/20/2019");
-            temp4.setTime(d4);
-            Date d5 = df.parse("1/20/2010");
-            temp5.setTime(d5);
-            Date d6 = df.parse("10/20/2019");
-            temp6.setTime(d6);
-            Car Car1 = new Car (temp1, "Outback", 18000,"LX", false);
-            Car Car2 = new Car (temp2, "Chevy", 11000,"EX", false);
-            Car Car3 = new Car (temp3, "Focus", 19000,"EX", true);
-            Truck Truck1 = new Truck(temp4,"F150",12000,"Tow",false);
-            Truck Truck2 = new Truck(temp5,"F250",42000,"NA",false);
-            Truck Truck3 = new Truck(temp1,"F350",2000,"Turbo",true);
-            add(Car1);
-            add(Car2);
-            add(Car3);
-            add(Truck1);
-            add(Truck2);
-            add(Truck3);
-        } catch (ParseException e) {
-            throw new RuntimeException("Error in testing, creation of list");
-        }
+//        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+//        GregorianCalendar temp1 = new GregorianCalendar();
+//        GregorianCalendar temp2 = new GregorianCalendar();
+//        GregorianCalendar temp3 = new GregorianCalendar();
+//        GregorianCalendar temp4 = new GregorianCalendar();
+//        GregorianCalendar temp5 = new GregorianCalendar();
+//        GregorianCalendar temp6 = new GregorianCalendar();
+//
+//        try {
+//            Date d1 = df.parse("3/20/2019");
+//            temp1.setTime(d1);
+//            Date d2 = df.parse("9/20/2019");
+//            temp2.setTime(d2);
+//            Date d3 = df.parse("12/20/2018");
+//            temp3.setTime(d3);
+//            Date d4 = df.parse("9/20/2019");
+//            temp4.setTime(d4);
+//            Date d5 = df.parse("1/20/2010");
+//            temp5.setTime(d5);
+//            Date d6 = df.parse("10/20/2019");
+//            temp6.setTime(d6);
+//
+//            Car Car1 = new Car(temp3, "Outback", "Buyer1", "LX", false);
+//            Car Car2 = new Car(temp2, "Chevy", "Buyer2", "EX", false);
+//            Car Car3 = new Car(temp6, "Focus", "Buyer3", "EX", true);
+//            Truck Truck1 = new Truck(temp4, "F150", "BuyerA", "LX", false);
+//            Truck Truck2 = new Truck(temp1, "F250", "BuyerB", "LX", false);
+//            Truck Truck3 = new Truck(temp5, "F350", "BuyerC", "EX", true);
+//
+//            add(Car1);
+//            add(Car2);
+//            add(Car3);
+//            add(Truck1);
+//            add(Truck2);
+//            add(Truck3);
+//        } catch (ParseException e) {
+//            throw new RuntimeException("Error in testing, creation of list");
+//        }
     }
- */
 }

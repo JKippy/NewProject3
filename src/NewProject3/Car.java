@@ -23,6 +23,13 @@ public class Car extends Auto {
         this.turbo = turbo;
     }
 
+    public Car(GregorianCalendar boughtOn,  String name,
+               int boughtCost, String trim, boolean turbo) {
+        super(boughtOn, name, boughtCost);
+        this.trim = trim;
+        this.turbo = turbo;
+    }
+
     public String getTrim() {
         return trim;
     }
