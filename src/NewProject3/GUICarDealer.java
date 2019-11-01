@@ -28,9 +28,9 @@ public class GUICarDealer extends JFrame implements ActionListener{
 	private JMenuItem saveTextItem;
 	private JMenuItem openTextItem;
 	private JMenuItem exitItem;
-    private JMenuItem soldScreen;
-    private JMenuItem boughtScreen;
-    private JMenuItem overDueScreen;
+    private JCheckBoxMenuItem soldScreen;
+    private JCheckBoxMenuItem boughtScreen;
+    private JCheckBoxMenuItem overDueScreen;
 
 	private JMenuItem boughtCarItem;
 	private JMenuItem boughtTruckItem;
@@ -44,7 +44,7 @@ public class GUICarDealer extends JFrame implements ActionListener{
 	private JTable jListArea;
 
 	/** Scroll pane */
-	//private JScrollPane scrollList;
+	private JScrollPane scrollList;
 
 	/*****************************************************************
 	 *
@@ -114,8 +114,9 @@ public class GUICarDealer extends JFrame implements ActionListener{
 		add(panel, BorderLayout.CENTER);
 
 		setVisible(true);
-		setSize(950,450);
+		setSize(850,400);
 
+		//Adds listener for column headers
 		jListArea.getTableHeader().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -227,7 +228,7 @@ public class GUICarDealer extends JFrame implements ActionListener{
 					JOptionPane.showMessageDialog(null, "No car was sold.");
 				} else {
 					JOptionPane.showMessageDialog(null, "Be sure to thank " + unit.getNameOfBuyer() +
-							" for buying the " + unit.getAutoName() + ". The difference in price was $" + (unit.getSoldPrice() - unit.getBoughtCost()));
+							" for buying the " + unit.getAutoName() + ". The difference in price was $" + unit.getSoldBoughtCost(unit.boughtCost, unit.soldPrice));
 				}
 				if(DList.getDisplay() == 2)
 					DList.setDisplay(2);

@@ -390,7 +390,7 @@ public class ListEngine extends AbstractTableModel {
                 break;
             case overDueScrn:
                 filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-                filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+                filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() >= 90).collect(Collectors.toList());
                 Collections.sort(filteredListAutos, Comparator.comparing(arg2 -> arg2.getOverDueDays()));
                 break;
         }
@@ -409,7 +409,7 @@ public class ListEngine extends AbstractTableModel {
             filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn != null).collect(Collectors.toList());
         else if(display == overDueScrn){
             filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
-            filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() > 90).collect(Collectors.toList());
+            filteredListAutos = (ArrayList<Auto>)filteredListAutos.stream().filter(arg -> arg.getOverDueDays() >= 90).collect(Collectors.toList());
         }
         else
             filteredListAutos = (ArrayList<Auto>)listAutos.stream().filter(arg -> arg.soldOn == null).collect(Collectors.toList());
@@ -538,8 +538,6 @@ public class ListEngine extends AbstractTableModel {
                 pw.println(df.format(tempSoldDate.getTime()));
             }  else
                 pw.println("No sold date");
-
-            //90 days overdue here
         }
 
         pw.close();
